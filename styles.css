@@ -1,0 +1,49 @@
+:root{
+  --bg:#0b0d12; --fg:#e8eaf0; --muted:#9aa3b2; --accent:#6ee7b7; --card:#131722; --border:#232838;
+  font-size:17px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.65;
+}
+header.site{
+  padding:28px 20px; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between; max-width:860px; margin:0 auto;
+}
+header.site a.logo{color:var(--fg); text-decoration:none; font-weight:800; font-size:1.3rem; letter-spacing:-0.5px}
+header.site a.logo span{color:var(--accent)}
+nav a{color:var(--muted); text-decoration:none; margin-left:18px; font-size:.95rem}
+nav a:hover{color:var(--fg)}
+main{max-width:860px; margin:0 auto; padding:40px 20px 80px}
+.hero{padding:40px 0 10px}
+.hero h1{font-size:2.1rem; margin:0 0 10px; letter-spacing:-0.5px}
+.hero p{color:var(--muted); max-width:620px}
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  padding:22px 24px; margin:18px 0; transition:border-color .15s;
+}
+.card:hover{border-color:#394061}
+.card a.title{color:var(--fg); text-decoration:none; font-size:1.3rem; font-weight:700; display:block; margin-bottom:6px}
+.card a.title:hover{color:var(--accent)}
+.meta{color:var(--muted); font-size:.85rem; margin-bottom:10px}
+.tag{
+  display:inline-block; background:#1c2335; color:var(--accent); border-radius:999px;
+  padding:3px 10px; font-size:.75rem; margin-right:6px; font-weight:600;
+}
+article.post h1{font-size:2rem; margin-bottom:8px; letter-spacing:-0.5px}
+article.post .meta{margin-bottom:26px}
+article.post h2{margin-top:36px; font-size:1.4rem; color:var(--fg)}
+article.post h3{margin-top:26px; font-size:1.15rem; color:var(--fg)}
+article.post p{color:#d6dae3}
+article.post a{color:var(--accent)}
+article.post blockquote{
+  border-left:3px solid var(--accent); margin:20px 0; padding:4px 18px; color:var(--muted); font-style:italic;
+}
+article.post ul{color:#d6dae3}
+article.post .sources{font-size:.9rem; color:var(--muted)}
+article.post .sources a{color:#8fb7ff}
+footer{text-align:center; color:var(--muted); font-size:.85rem; padding:30px 20px; border-top:1px solid var(--border)}
+.backlink{display:inline-block; margin-bottom:24px; color:var(--muted); text-decoration:none; font-size:.9rem}
+.backlink:hover{color:var(--accent)}
