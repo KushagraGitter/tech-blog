@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Froze Its Bug Bounty Because AI Won't Stop Lying About Bugs — Signal/Noise</title>
+<meta name="description" content="Google paused its Open Source Software Vulnerability Reward Program after AI-generated 'slop' reports overwhelmed its triage teams — a warning sign for every disclosure program built on human trust.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav><a href="../index.html">Home</a></nav>
+</header>
+<main>
+  <a class="backlink" href="../index.html">&larr; Back to all posts</a>
+  <article class="post">
+    <h1>Google Froze Its Bug Bounty Program Because AI Won't Stop Lying About Bugs</h1>
+    <div class="meta">October 10, 2026 · Kushagra · 8 min read</div>
+
+    <p>On October 1, 2026, Google quietly did something it has never done in the sixteen years since it started paying strangers to find bugs in its code: it stopped accepting new vulnerability reports for the Open Source Software Vulnerability Reward Program (OSS VRP). Not because the money ran out — Google paid a record $17.1 million to researchers in 2025 alone — but because the reports stopped being written by people who understood what they were reporting. Three days later, when TechCrunch broke the story wide, the reason Google gave was almost comically blunt for a company that usually drowns announcements in careful hedging: "This pause is due to a significant rise in automated submissions, the vast majority of which are not valid."</p>
+
+    <h2>What actually happened</h2>
+    <p>The Google Bug Hunters team posted the freeze on X: "PSA for open-source bug hunters. We are temporarily no longer accepting OSS VRP product vulnerability submissions." The scope is narrower than the panicked headlines suggest — it covers only <em>product vulnerability</em> reports against flagship open-source projects like Golang, Angular, Bazel, Protocol Buffers, and Fuchsia. Supply-chain reports (compromised dependency trees, misconfigured GitHub Actions, access-control gaps) are untouched, and anything filed before October 1 stays in the normal review pipeline. Researchers chasing a payday are instead being redirected to the Google Cloud VRP, the AI VRP, or the Patch Rewards Program, which pays up to $15,000 for a working fix rather than just a claim.</p>
+    <p>The underlying cause is what Google and researchers are now calling "AI slop": a flood of bug reports written by large language models that read as fluent, confident, CVE-formatted security disclosures — and are, overwhelmingly, hallucinated. Tom's Hardware reported that Google engineers and open-source maintainers were "overwhelmed by thousands of these poorly written reports that claimed to find bugs but were actually completely invalid or unexploitable hallucinations," burning triage hours that should have gone to real, critical vulnerabilities. A bug bounty report cannot be dismissed on vibes; someone has to read the code, try to reproduce the exploit, and confirm it's fake. An LLM can generate that fake report in seconds, for free, at unlimited volume. Google blinked first.</p>
+
+    <h2>Why this is landing differently than a routine policy tweak</h2>
+    <p>Bug bounty programs are one of the few places where the security industry's incentives have historically worked well: pay for proof, and honest researchers show up. What broke this week is the assumption baked into that model — that writing a plausible vulnerability report costs real effort, so volume self-limits. Generative AI deletes that cost. The numbers back up how fast this shifted: HackerOne's ninth annual Hacker-Powered Security Report found valid AI-related vulnerability reports up 210% year over year, with prompt-injection findings specifically up 540% — the fastest-growing bug class the platform tracks. Seventy percent of surveyed researchers now use AI tools in their own workflow, and autonomous agents submitted more than 560 valid reports entirely on their own, what HackerOne calls the start of a "hackbot arms race." Programs that put AI systems in scope grew 270% to 1,121 in 2025, and total payouts across HackerOne hit $81 million, up 13%.</p>
+    <p>Volume data from elsewhere in the ecosystem tells the same story from a different angle. An analysis citing Epoch AI figures counted roughly 1,500 high- and critical-severity CVEs reported by 21 organizations in June 2026 alone — about 3.5 times the previous monthly record. FIRST, the nonprofit that forecasts annual CVE volume, revised its 2026 projection upward to around 66,000 — roughly 46% above its original estimate. Google isn't reacting to a one-off spam wave; it's reacting to a structural change in how cheap it has become to generate something that looks like a security finding.</p>
+    <p>Google also isn't alone, and that matters. GitHub has already imposed a four-submission cap on newcomers to its own bounty program, a move The Hacker News noted risks "narrowing" who gets to participate at all. Curl's maintainer Daniel Stenberg has publicly complained for over a year about AI-slop reports consuming his personal review time, and the project has shifted toward private, email-only disclosure partly to filter out automated noise. Across the industry, the pattern is the same: the people running these programs are choosing to shrink the front door rather than keep eating unlimited triage cost.</p>
+
+    <h2>The uncomfortable trade-off nobody's fully solved</h2>
+    <p>Google's framing is careful — "temporary," with an update promised for Q1 2027 — but the move is really a cost-shifting decision, not a fix. By closing the main submission channel, Google pushes the triage burden back onto itself in a different form: legitimate researchers who would have filed through OSS VRP now either go to Google's other, still-open programs, route around the freeze entirely, or just stop bothering and take their findings to the press or to a different vendor. The underlying economics haven't moved. If a model can produce a fluent, CVE-shaped report for effectively zero marginal cost, someone will keep generating them as long as any program anywhere still pays out occasionally — the expected value of trying stays positive even at a near-zero hit rate.</p>
+    <p>There's a legitimate defense of the pause, too. A public, unauthenticated bounty channel optimized purely for submission volume becomes unworkable the instant submission cost hits zero — and a program that drowns in noise pays out nothing to anyone, honest researchers included. Google's logic is essentially: pause now, protect the parts of the program that still function (supply chain, patch rewards, cloud), and come back in 2027 with intake redesigned around reputation scores or mandatory proof-of-concept requirements, similar to the signal-based gating GitHub and curl have already adopted.</p>
+
+    <h2>What to watch next</h2>
+    <ul>
+      <li><strong>Google's Q1 2027 redesign</strong> — will it require verified identity, working proof-of-concept builds, or reputation thresholds before a report is even queued? That's the template every other large bounty program will likely copy.</li>
+      <li><strong>Whether other major vendors follow Google's lead</strong> — Microsoft, Meta, and Apple all run comparable public OSS bounty surfaces; a second major freeze would confirm this is an industry-wide breaking point, not a Google-specific problem.</li>
+      <li><strong>The "hackbot arms race" HackerOne flagged</strong> — 560+ valid reports filed by autonomous agents, not humans using AI tools, is a different and more disruptive trend than slop; watch whether legitimate agent-submitted findings start outpacing human ones on any major platform.</li>
+      <li><strong>FIRST's revised CVE forecast</strong> — a 46% upward revision to ~66,000 CVEs for 2026 is itself a story; if that trajectory holds or accelerates into 2027, triage capacity across the whole industry, not just at Google, becomes the binding constraint.</li>
+    </ul>
+
+    <blockquote>The irony is pointed: the same generative AI that labs are racing to put inside security tooling is now the biggest operational threat to the human-verification systems that keep those tools honest.</blockquote>
+
+    <p>Google didn't shut down its bug bounty program because it stopped caring about open-source security — it paid out a record amount just last year. It paused the program because the verification side of the trust equation, the part that still requires a human to sit down and check whether a claim is real, hasn't scaled at anywhere near the rate the claim-generation side just did. That gap is now everyone's problem, not just Google's.</p>
+
+    <h3 class="sources">Sources &amp; further reading</h3>
+    <ul class="sources">
+      <li>TechCrunch — "Google froze its open source bug bounty program due to a 'significant rise' in AI submissions" (Oct 4, 2026)</li>
+      <li>BleepingComputer — "Google halts open-source bug bounty program amid AI spam surge"</li>
+      <li>Tom's Hardware — "Google suspends part of the OSS VRP bug bounty program due to an influx of invalid AI submissions"</li>
+      <li>Google Bug Hunters / Google VRP (X / bughunters.google.com) — official pause announcement and program rules update</li>
+      <li>HackerOne — Ninth Annual Hacker-Powered Security Report (AI vulnerability reports up 210% YoY, prompt-injection findings up 540%, autonomous agents filing 560+ valid reports)</li>
+      <li>SecurityCipher / Epoch AI data — CVE volume analysis, June 2026 spike and FIRST's revised 2026 forecast of ~66,000 CVEs</li>
+      <li>The Hacker News — coverage of GitHub's four-submission cap for new bug bounty participants</li>
+      <li>Lowyat.NET / dev.to (TechAIWire) — additional reporting on program scope and what remains open during the freeze</li>
+    </ul>
+  </article>
+</main>
+<footer>
+  Signal/Noise · Built by Kushagra
+</footer>
+</body>
+</html>
