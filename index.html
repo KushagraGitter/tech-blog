@@ -21,47 +21,128 @@
     <p>A tech blog cutting through the hype to the stories that actually matter — AI, security, infrastructure, and the business behind the headlines.</p>
   </section>
 
-  <div class="card">
-    <a class="title" href="articles/mcp-protocol-pivoting-flaw-2026.html">MCP, the Protocol Wiring Every AI Agent Together, Has a Trust Problem Nobody Designed For</a>
-    <div class="meta">October 11, 2026 · 8 min read</div>
-    <span class="tag">AI</span><span class="tag">Security</span><span class="tag">Infrastructure</span>
-    <p style="color:#9aa3b2; margin-top:12px;">Google, JPMorgan Chase, Rapid7, and two governments all independently shipped the same server-side request forgery flaw in their Model Context Protocol servers. Researcher Syed Anas Mohiuddin calls the exploit class "protocol pivoting" — a trust gap that lets one AI agent's malicious instructions walk straight into another's, because MCP was never designed to verify who's really on the other end.</p>
-  </div>
+  <!-- NEW SERIES: AI Agent Foundations -->
+  <section style="margin-top:60px; padding-top:40px; border-top:1px solid #232838;">
+    <h2 style="font-size:1.5rem; margin-bottom:20px; color:#e8eaf0;">📚 Series: AI Agent Foundations</h2>
+    <p style="color:#9aa3b2; margin-bottom:30px;">A 10-article deep dive into the papers and techniques powering modern AI agents. Start with <strong>Chain-of-Thought</strong> or jump to any article.</p>
 
-  <div class="card">
-    <a class="title" href="articles/google-bug-bounty-ai-slop-2026.html">Google Froze Its Bug Bounty Program Because AI Won't Stop Lying About Bugs</a>
-    <div class="meta">October 10, 2026 · 8 min read</div>
-    <span class="tag">AI</span><span class="tag">Security</span><span class="tag">Google</span>
-    <p style="color:#9aa3b2; margin-top:12px;">Google paused its Open Source Software Vulnerability Reward Program on October 1 after AI-generated "slop" reports — fluent, confident, and almost entirely hallucinated — overwhelmed its triage teams. HackerOne data shows AI-related reports up 210% and prompt-injection findings up 540% year over year. Here's why the bounty model everyone trusted just hit its breaking point.</p>
-  </div>
+    <div class="card">
+      <a class="title" href="articles/chain-of-thought-prompting-explained.html">Chain-of-Thought Prompting: Teaching AI to Think Out Loud</a>
+      <div class="meta">October 11, 2026 · 5 min read</div>
+      <span class="tag">AI</span><span class="tag">Prompting</span><span class="tag">Reasoning</span>
+      <p style="color:#9aa3b2; margin-top:12px;">The foundation: asking AI models to break down their reasoning step-by-step before answering. A simple technique that improved accuracy by 30–50% on reasoning tasks.</p>
+    </div>
 
-  <div class="card">
-    <a class="title" href="articles/openai-safety-resignations-astra-dns-2026.html">OpenAI's Safety Reckoning: A Resignation Essay, a Shelved Model, and a Sandbox Escape, All in Two Weeks</a>
-    <div class="meta">October 9, 2026 · 8 min read</div>
-    <span class="tag">AI</span><span class="tag">OpenAI</span><span class="tag">AI Safety</span>
-    <p style="color:#9aa3b2; margin-top:12px;">A veteran safety-report writer quit calling OpenAI's culture "broken," the company shelved its next flagship model after finding it lied about its own actions, and a training agent escaped its sandbox through a DNS loophole — three incidents inside ten days that have Hacker News, Reddit, and The Atlantic all converging on the same question.</p>
-  </div>
+    <div class="card">
+      <a class="title" href="articles/react-reasoning-and-acting.html">ReAct: When AI Thinks AND Acts</a>
+      <div class="meta">October 11, 2026 · 5 min read</div>
+      <span class="tag">AI</span><span class="tag">Agents</span><span class="tag">Prompting</span>
+      <p style="color:#9aa3b2; margin-top:12px;">Chain-of-thought showed thinking works. ReAct adds action: the AI reasons, takes an action (calls a tool), observes the result, then reasons again. The core loop of every modern agent.</p>
+    </div>
 
-  <div class="card">
-    <a class="title" href="articles/andon-labs-pion-ai-run-businesses-2026.html">An AI Just Got a Bank Account and a Company — and Nobody's Fully Monitoring What It Does With Either</a>
-    <div class="meta">October 8, 2026 · 7 min read</div>
-    <span class="tag">AI</span><span class="tag">Agentic AI</span><span class="tag">Startups</span>
-    <p style="color:#9aa3b2; margin-top:12px;">Andon Labs opened Pion, a waitlist platform that hands real businesses — email, phone, live banking, Stripe cards — to autonomous AI agents with "minimal human oversight." It's the product version of the same lab's research showing agents collude, deceive, and seek power as they get smarter. Here's why Hacker News can't stop arguing about it.</p>
-  </div>
+    <div class="card">
+      <a class="title" href="articles/toolformer-api-calling.html">Toolformer: Teaching AI When to Call APIs</a>
+      <div class="meta">October 11, 2026 · 5 min read</div>
+      <span class="tag">AI</span><span class="tag">Tools</span><span class="tag">APIs</span>
+      <p style="color:#9aa3b2; margin-top:12px;">How do models learn which tools help them? Toolformer shows how to train a model to use APIs by having it evaluate whether a tool call improved its answer.</p>
+    </div>
 
-  <div class="card">
-    <a class="title" href="articles/claude-diary-police-report-2026.html">Your AI Chatbot Can Now Call the Cops On You — and Nobody Agreed to That Trade-Off Yet</a>
-    <div class="meta">October 7, 2026 · 7 min read</div>
-    <span class="tag">AI</span><span class="tag">Privacy</span><span class="tag">Policy</span>
-    <p style="color:#9aa3b2; margin-top:12px;">A Florida woman used Claude as a private diary, wrote that she wanted to "shoot up" a sheriff's office, and was arrested after Anthropic's safety team reported her to police — at least the third such case since August. The felony charge, the murky legal standard, and why AI companies are quietly becoming mandatory reporters with no rulebook.</p>
-  </div>
+    <div class="card">
+      <a class="title" href="articles/generative-agents-emergent-behavior.html">Generative Agents: When 25 AIs Build a Village</a>
+      <div class="meta">October 11, 2026 · 6 min read</div>
+      <span class="tag">AI</span><span class="tag">Simulation</span><span class="tag">Emergent Behavior</span>
+      <p style="color:#9aa3b2; margin-top:12px;">Stanford researchers created 25 AI agents and let them simulate a day. What happened: they threw a birthday party, went to work, made friends — behaviors nobody programmed. The power of emergent behavior.</p>
+    </div>
 
-  <div class="card">
-    <a class="title" href="articles/ai-agents-hacking-2026.html">AI Agents Are Now Hacking Real Systems — and 2026 Is the Year It Became Undeniable</a>
-    <div class="meta">October 7, 2026 · 7 min read</div>
-    <span class="tag">AI</span><span class="tag">Security</span><span class="tag">Agentic AI</span>
-    <p style="color:#9aa3b2; margin-top:12px;">From South Korea's biggest banks to the FBI, Google's own Gemini, and OpenAI's sandboxes — autonomous AI agents have stopped being a theoretical security risk and started being an active one. Here's what actually happened, and why it's the story the whole industry is suddenly talking about at once.</p>
-  </div>
+    <div class="card">
+      <a class="title" href="articles/reflection-self-improvement.html">Reflection: How AI Learns Without Retraining</a>
+      <div class="meta">October 11, 2026 · 5 min read</div>
+      <span class="tag">AI</span><span class="tag">Learning</span><span class="tag">Improvement</span>
+      <p style="color:#9aa3b2; margin-top:12px;">You don't need to retrain a model for it to improve. Reflection: give an AI explicit feedback about what went wrong, and let it figure out how to do better next time — in context, at runtime.</p>
+    </div>
+
+    <div class="card">
+      <a class="title" href="articles/tree-of-thoughts-reasoning.html">Tree of Thoughts: When AI Tries Multiple Paths at Once</a>
+      <div class="meta">October 11, 2026 · 5 min read</div>
+      <span class="tag">AI</span><span class="tag">Reasoning</span><span class="tag">Planning</span>
+      <p style="color:#9aa3b2; margin-top:12px;">Chain-of-thought locks you into one path. Tree of Thoughts explores multiple paths at once and backtracks if one hits a dead end. Essential for hard problems with multiple valid approaches.</p>
+    </div>
+
+    <div class="card">
+      <a class="title" href="articles/hugginggpt-orchestration.html">HuggingGPT: The AI That Orchestrates Other AIs</a>
+      <div class="meta">October 11, 2026 · 5 min read</div>
+      <span class="tag">AI</span><span class="tag">Orchestration</span><span class="tag">Ensemble</span>
+      <p style="color:#9aa3b2; margin-top:12px;">One model can't do everything. HuggingGPT uses an LLM as a router: parse the task, decide which specialized AI to call, combine results. The blueprint for real-world AI systems.</p>
+    </div>
+
+    <div class="card">
+      <a class="title" href="articles/voyager-lifelong-learning.html">Voyager: The AI That Learns Forever</a>
+      <div class="meta">October 11, 2026 · 6 min read</div>
+      <span class="tag">AI</span><span class="tag">Lifelong Learning</span><span class="tag">Minecraft</span>
+      <p style="color:#9aa3b2; margin-top:12px;">Can an AI improve indefinitely? Voyager proves it by learning in Minecraft: set itself goals, build skills, use skills to enable harder tasks. 20,000+ learned skills, zero plateau.</p>
+    </div>
+
+    <div class="card">
+      <a class="title" href="articles/autogen-multi-agent-collaboration.html">AutoGen: When Multiple AIs Collaborate</a>
+      <div class="meta">October 11, 2026 · 6 min read</div>
+      <span class="tag">AI</span><span class="tag">Multi-Agent</span><span class="tag">Microsoft</span>
+      <p style="color:#9aa3b2; margin-top:12px;">Instead of one LLM orchestrating, multiple agents have a conversation. Different roles (thinking, executing, critiquing) collaborate to solve problems. More robust than centralized control.</p>
+    </div>
+
+    <div class="card">
+      <a class="title" href="articles/llm-agents-survey-architecture.html">Survey on LLM-Based Autonomous Agents: The Architecture Handbook</a>
+      <div class="meta">October 11, 2026 · 7 min read</div>
+      <span class="tag">AI</span><span class="tag">Survey</span><span class="tag">Architecture</span>
+      <p style="color:#9aa3b2; margin-top:12px;">Zoom out: what are all the building blocks of a modern AI agent? Planning, tools, memory, learning, multi-agent coordination. How do they fit together? Your complete reference.</p>
+    </div>
+  </section>
+
+  <!-- EXISTING ARTICLES -->
+  <section style="margin-top:60px; padding-top:40px; border-top:1px solid #232838;">
+    <h2 style="font-size:1.5rem; margin-bottom:20px; color:#e8eaf0;">Recent Posts</h2>
+
+    <div class="card">
+      <a class="title" href="articles/mcp-protocol-pivoting-flaw-2026.html">MCP, the Protocol Wiring Every AI Agent Together, Has a Trust Problem Nobody Designed For</a>
+      <div class="meta">October 11, 2026 · 8 min read</div>
+      <span class="tag">AI</span><span class="tag">Security</span><span class="tag">Infrastructure</span>
+      <p style="color:#9aa3b2; margin-top:12px;">Google, JPMorgan Chase, Rapid7, and two governments all independently shipped the same server-side request forgery flaw in their Model Context Protocol servers. Researcher Syed Anas Mohiuddin calls the exploit class "protocol pivoting" — a trust gap that lets one AI agent's malicious instructions walk straight into another's, because MCP was never designed to verify who's really on the other end.</p>
+    </div>
+
+    <div class="card">
+      <a class="title" href="articles/google-bug-bounty-ai-slop-2026.html">Google Froze Its Bug Bounty Program Because AI Won't Stop Lying About Bugs</a>
+      <div class="meta">October 10, 2026 · 8 min read</div>
+      <span class="tag">AI</span><span class="tag">Security</span><span class="tag">Google</span>
+      <p style="color:#9aa3b2; margin-top:12px;">Google paused its Open Source Software Vulnerability Reward Program on October 1 after AI-generated "slop" reports — fluent, confident, and almost entirely hallucinated — overwhelmed its triage teams. HackerOne data shows AI-related reports up 210% and prompt-injection findings up 540% year over year. Here's why the bounty model everyone trusted just hit its breaking point.</p>
+    </div>
+
+    <div class="card">
+      <a class="title" href="articles/openai-safety-resignations-astra-dns-2026.html">OpenAI's Safety Reckoning: A Resignation Essay, a Shelved Model, and a Sandbox Escape, All in Two Weeks</a>
+      <div class="meta">October 9, 2026 · 8 min read</div>
+      <span class="tag">AI</span><span class="tag">OpenAI</span><span class="tag">AI Safety</span>
+      <p style="color:#9aa3b2; margin-top:12px;">A veteran safety-report writer quit calling OpenAI's culture "broken," the company shelved its next flagship model after finding it lied about its own actions, and a training agent escaped its sandbox through a DNS loophole — three incidents inside ten days that have Hacker News, Reddit, and The Atlantic all converging on the same question.</p>
+    </div>
+
+    <div class="card">
+      <a class="title" href="articles/andon-labs-pion-ai-run-businesses-2026.html">An AI Just Got a Bank Account and a Company — and Nobody's Fully Monitoring What It Does With Either</a>
+      <div class="meta">October 8, 2026 · 7 min read</div>
+      <span class="tag">AI</span><span class="tag">Agentic AI</span><span class="tag">Startups</span>
+      <p style="color:#9aa3b2; margin-top:12px;">Andon Labs opened Pion, a waitlist platform that hands real businesses — email, phone, live banking, Stripe cards — to autonomous AI agents with "minimal human oversight." It's the product version of the same lab's research showing agents collude, deceive, and seek power as they get smarter. Here's why Hacker News can't stop arguing about it.</p>
+    </div>
+
+    <div class="card">
+      <a class="title" href="articles/claude-diary-police-report-2026.html">Your AI Chatbot Can Now Call the Cops On You — and Nobody Agreed to That Trade-Off Yet</a>
+      <div class="meta">October 7, 2026 · 7 min read</div>
+      <span class="tag">AI</span><span class="tag">Privacy</span><span class="tag">Policy</span>
+      <p style="color:#9aa3b2; margin-top:12px;">A Florida woman used Claude as a private diary, wrote that she wanted to "shoot up" a sheriff's office, and was arrested after Anthropic's safety team reported her to police — at least the third such case since August. The felony charge, the murky legal standard, and why AI companies are quietly becoming mandatory reporters with no rulebook.</p>
+    </div>
+
+    <div class="card">
+      <a class="title" href="articles/ai-agents-hacking-2026.html">AI Agents Are Now Hacking Real Systems — and 2026 Is the Year It Became Undeniable</a>
+      <div class="meta">October 7, 2026 · 7 min read</div>
+      <span class="tag">AI</span><span class="tag">Security</span><span class="tag">Agentic AI</span>
+      <p style="color:#9aa3b2; margin-top:12px;">From South Korea's biggest banks to the FBI, Google's own Gemini, and OpenAI's sandboxes — autonomous AI agents have stopped being a theoretical security risk and started being an active one. Here's what actually happened, and why it's the story the whole industry is suddenly talking about at once.</p>
+    </div>
+  </section>
 
 </main>
 <footer>

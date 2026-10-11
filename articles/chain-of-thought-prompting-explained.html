@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chain-of-Thought Prompting: Teaching AI to Think Out Loud</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="https://github.com/KushagraGitter" target="_blank">GitHub</a>
+  </nav>
+</header>
+
+<main style="max-width:860px; margin:0 auto; padding:40px 20px 80px;">
+<a class="backlink" href="../index.html">← Back</a>
+
+<article class="post">
+<h1>Chain-of-Thought Prompting: Teaching AI to Think Out Loud</h1>
+<div class="meta">October 11, 2026 · 5 min read</div>
+<span class="tag">AI</span><span class="tag">Prompting</span><span class="tag">Reasoning</span>
+
+<p>Here's a simple truth: when you ask someone a hard math problem, they don't just blurt out the answer. They write down their steps. They explain their thinking. And here's what researchers discovered in 2022: <strong>AI language models do the exact same thing better when you ask them to.</strong></p>
+
+<h2>The Problem</h2>
+<p>Before chain-of-thought (CoT) prompting, asking an LLM a complex question would get you a direct answer — often wrong. Ask "If a baker has 3 baskets with 4 apples each, and gives away 5 apples, how many are left?" and an untrained model might say "7" (skipping the multiplication) or "12" (forgetting the subtraction).</p>
+
+<p>The issue: language models predict the next word sequentially. If you jump straight to the answer, they can't "show their work," so they make mistakes.</p>
+
+<h2>The Insight: Ask Them to Explain</h2>
+<p>The breakthrough was stupidly simple: <strong>ask the model to break down its reasoning step-by-step before answering.</strong></p>
+
+<p>Instead of asking: <em>"If a baker has 3 baskets with 4 apples each, and gives away 5, how many are left?"</em></p>
+
+<p>Ask: <em>"Let's think step by step. The baker has 3 baskets with 4 apples each. How many apples is that? Then, he gives away 5 apples. How many are left? Show your work."</em></p>
+
+<p>And suddenly, the model gets it right — because it forces the AI to build intermediate reasoning tokens that guide its final answer.</p>
+
+<h2>Why It Works</h2>
+<p>Three reasons:</p>
+
+<ol>
+<li><strong>Intermediate representations:</strong> By writing down steps, the model builds "checkpoints" it can verify against as it goes. A mistake early is caught before cascading.</li>
+<li><strong>Tokenization alignment:</strong> The model's token-prediction engine works better when reasoning and action are interleaved, not compressed into a single jump.</li>
+<li><strong>Human readability:</strong> When you can see the steps, you can audit where it went wrong and correct it.</li>
+</ol>
+
+<h2>Real-World Impact</h2>
+<p>Chain-of-thought prompting improved accuracy on math, logic, and commonsense reasoning benchmarks by 30–50% in the original 2022 paper. A question that was wrong 60% of the time suddenly became right 85% of the time — just by asking "show your work."</p>
+
+<p>It's now table stakes for any prompt dealing with reasoning, planning, or multi-step problems. If your AI isn't showing its work, you're probably not getting its best output.</p>
+
+<h2>The Catch</h2>
+<p>Chain-of-thought has a cost: <strong>more tokens.</strong> Writing out 5 intermediate steps uses 5× the input tokens. For a conversational chatbot, that's fine. For a real-time system handling millions of requests, that's a budget problem. Some labs are now researching "distilled" CoT — how to get the benefit while using fewer tokens.</p>
+
+<h2>What You Take Away</h2>
+<p>If you're building an AI system that needs to be right:</p>
+<ul>
+<li>Always ask for step-by-step reasoning.</li>
+<li>Be explicit: "Let's think through this carefully" or "Show your work" or "Break this into steps."</li>
+<li>Budget for longer outputs.</li>
+<li>Combine with <strong>ReAct</strong> (next paper) if the AI also needs to take actions based on its reasoning.</li>
+</ul>
+
+<div class="sources" style="margin-top:40px; padding-top:20px; border-top:1px solid #232838;">
+<strong>Sources & Further Reading:</strong><br>
+• Wei, J., et al. (2022). "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models." <em>arXiv:2201.11903</em><br>
+• <a href="https://arxiv.org/abs/2201.11903">Full paper on arXiv</a>
+</div>
+</article>
+</main>
+
+<footer style="text-align:center; color:#9aa3b2; font-size:.85rem; padding:30px 20px; border-top:1px solid #232838;">
+  Built by Kushagra · Signal/Noise · <a href="https://github.com/KushagraGitter/tech-blog" style="color:#9aa3b2;">Source on GitHub</a>
+</footer>
+</body>
+</html>

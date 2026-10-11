@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tree of Thoughts: When AI Tries Multiple Paths</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="https://github.com/KushagraGitter" target="_blank">GitHub</a>
+  </nav>
+</header>
+
+<main style="max-width:860px; margin:0 auto; padding:40px 20px 80px;">
+<a class="backlink" href="../index.html">← Back</a>
+
+<article class="post">
+<h1>Tree of Thoughts: When AI Tries Multiple Paths at Once</h1>
+<div class="meta">October 11, 2026 · 5 min read</div>
+<span class="tag">AI</span><span class="tag">Reasoning</span><span class="tag">Planning</span>
+
+<p>Chain-of-Thought showed that step-by-step reasoning works. But here's the catch: what if you make a mistake in step 2? You're stuck on the wrong path.</p>
+
+<p><strong>Tree of Thoughts</strong> fixes that by letting the AI explore multiple reasoning paths and backtrack when one hits a dead end.</p>
+
+<h2>Linear vs. Branching Reasoning</h2>
+<p><strong>Chain-of-Thought (linear):</strong></p>
+<blockquote>
+Step 1: Start here<br>
+Step 2: Do this (locked in)<br>
+Step 3: Do that (stuck if step 2 was wrong)<br>
+Answer: Wrong
+</blockquote>
+
+<p><strong>Tree of Thoughts (branching):</strong></p>
+<blockquote>
+Step 1: Start here<br>
+Step 2a: Try this path<br>
+Step 2b: Try that path<br>
+Step 2c: Try another path<br>
+<br>
+If 2a fails → backtrack and explore 2b<br>
+If 2b works → continue with 2b<br>
+Answer: Right
+</blockquote>
+
+<h2>The Problem ToT Solves</h2>
+<p>Imagine you're solving a complex puzzle. You go down one path, realize it's wrong, but a linear chain-of-thought agent can't backtrack. It's committed to its path.</p>
+
+<p>Tree of Thoughts says: "Generate multiple next steps. Evaluate which ones look promising. Keep exploring the best ones. If one fails, try the next."</p>
+
+<h2>How It Works</h2>
+
+<p><strong>Three ingredients:</strong></p>
+
+<ol>
+<li><strong>Generate candidates:</strong> For each step, the model generates 3-5 possible next moves (not just 1).</li>
+<li><strong>Evaluate candidates:</strong> Quickly evaluate which moves look good (do they seem on track?) and which look bad.</li>
+<li><strong>Explore promising branches:</strong> Expand only the paths that look promising. Abandon the rest.</li>
+</ol>
+
+<p><strong>Example: Solving a Sudoku puzzle</strong></p>
+<blockquote>
+Current state: Half-filled grid<br>
+<br>
+Option A: Fill cell 1,1 with 5 (seems valid)<br>
+Option B: Fill cell 1,1 with 3 (seems valid)<br>
+Option C: Fill cell 1,1 with 7 (conflicts with row — bad)<br>
+<br>
+Pursue A and B. Abandon C.<br>
+<br>
+For A: Option A1, A2, A3 (keep going)<br>
+For B: Option B1, B2 (one leads to contradiction, backtrack)<br>
+<br>
+...continue until solved.
+</blockquote>
+
+<h2>Why It's Better Than Chain-of-Thought</h2>
+
+<p><strong>CoT strength:</strong> Simple, fast, works for many tasks.</p>
+
+<p><strong>ToT strength:</strong> Explores the space of possible solutions, can correct mistakes, finds better answers to hard problems.</p>
+
+<p><strong>The trade-off:</strong> ToT uses way more tokens (you're generating and evaluating multiple branches), so it's slower and more expensive. Use CoT for simple questions, ToT for hard problems.</p>
+
+<h2>Real-World Applications</h2>
+
+<ul>
+<li><strong>Planning:</strong> "Plan my day" — explore different orderings of tasks, evaluate which schedule is best.</li>
+<li><strong>Game playing:</strong> Chess, Go, or game strategy where you need to look ahead multiple moves.</li>
+<li><strong>Math competitions:</strong> Hard math problems where you might go down wrong paths.</li>
+<li><strong>Code debugging:</strong> Explore multiple hypotheses about why code is broken, evaluate each one.</li>
+<li><strong>Creative writing:</strong> Plot multiple story branches, evaluate which is most compelling.</li>
+</ul>
+
+<h2>The Limit: Search Depth</h2>
+<p>Tree of Thoughts scales exponentially. If each step has 3 options and you explore 10 steps with full branching, you've got 3^10 = 59k paths to explore. That's a lot of tokens.</p>
+
+<p>So in practice, ToT systems use aggressive pruning: evaluate branches harshly, kill bad ones early, only expand the top few.</p>
+
+<h2>Modern Variants</h2>
+<p>Newer systems use ToT ideas but with different search strategies:</p>
+
+<ul>
+<li><strong>Best-first search:</strong> Explore the most promising branch fully before trying others.</li>
+<li><strong>Beam search:</strong> Keep the top K branches alive at each step.</li>
+<li><strong>Monte Carlo tree search:</strong> Randomly sample branches, then exploit the good ones.</li>
+</ul>
+
+<h2>What You Take Away</h2>
+
+<ul>
+<li>Linear reasoning (CoT) can get stuck.</li>
+<li>Branching reasoning (ToT) can explore and backtrack.</li>
+<li>Use ToT for hard problems with multiple plausible paths.</li>
+<li>Use CoT for simple, straightforward tasks (it's cheaper).</li>
+<li>The best system often combines both: quick CoT for filtering, deep ToT for hard cases.</li>
+</ul>
+
+<div class="sources" style="margin-top:40px; padding-top:20px; border-top:1px solid #232838;">
+<strong>Sources & Further Reading:</strong><br>
+• Yao, S., et al. (2023). "Tree of Thoughts: Deliberate Problem Solving with Large Language Models." <em>arXiv:2305.10601</em><br>
+• <a href="https://arxiv.org/abs/2305.10601">Full paper on arXiv</a>
+</div>
+</article>
+</main>
+
+<footer style="text-align:center; color:#9aa3b2; font-size:.85rem; padding:30px 20px; border-top:1px solid #232838;">
+  Built by Kushagra · Signal/Noise · <a href="https://github.com/KushagraGitter/tech-blog" style="color:#9aa3b2;">Source on GitHub</a>
+</footer>
+</body>
+</html>

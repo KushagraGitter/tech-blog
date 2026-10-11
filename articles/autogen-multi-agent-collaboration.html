@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoGen: When Multiple AIs Collaborate</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="https://github.com/KushagraGitter" target="_blank">GitHub</a>
+  </nav>
+</header>
+
+<main style="max-width:860px; margin:0 auto; padding:40px 20px 80px;">
+<a class="backlink" href="../index.html">← Back</a>
+
+<article class="post">
+<h1>AutoGen: When Multiple AIs Collaborate</h1>
+<div class="meta">October 11, 2026 · 6 min read</div>
+<span class="tag">AI</span><span class="tag">Multi-Agent</span><span class="tag">Microsoft</span>
+
+<p>What if, instead of one LLM orchestrating other tools, multiple specialized AI agents had a conversation and figured it out together?</p>
+
+<p>That's AutoGen. And it's become the framework that powers many real deployments of multi-agent systems.</p>
+
+<h2>The Shift: From Orchestration to Conversation</h2>
+
+<p><strong>HuggingGPT model:</strong><br>
+LLM decides what to do → LLM calls tools → LLM combines results</p>
+
+<p><strong>AutoGen model:</strong><br>
+Agent A proposes an idea → Agent B evaluates it → Agent C executes it → Agent A synthesizes → repeat</p>
+
+<p>Instead of centralized control, it's decentralized conversation. Agents have different roles, but they talk to each other.</p>
+
+<h2>The Agents in AutoGen</h2>
+
+<p><strong>1. User Proxy Agent</strong></p>
+<p>Represents the human. Can ask for input, approve actions, override decisions. "Yes, that's a good idea" or "No, try something else."</p>
+
+<p><strong>2. Assistant Agent</strong></p>
+<p>A generalist LLM (like GPT-4). Proposes solutions, drafts code, explains reasoning. Its job: think out loud.</p>
+
+<p><strong>3. Code Executor Agent</strong></p>
+<p>Runs the code the assistant proposes. Reports back: "This code has a bug on line 5" or "This code works and produced output X."</p>
+
+<p><strong>4. Critic Agent</strong> (optional)</p>
+<p>Reviews proposals. "That solution won't scale" or "There's a simpler approach." Keeps the system from going down bad paths.</p>
+
+<h2>How It Works: A Real Example</h2>
+
+<blockquote>
+<strong>User:</strong> "Write Python code to analyze my sales data and create a visualization."<br><br>
+
+<strong>Assistant:</strong> "I'll need to load the CSV, clean it, and create a bar chart. Here's the code: [proposes code]"<br><br>
+
+<strong>Code Executor:</strong> "Runs code. Error: 'sales_data.csv' not found."<br><br>
+
+<strong>Assistant:</strong> "Let me fix that. First, let's list the files in your directory: [proposes listing code]"<br><br>
+
+<strong>Code Executor:</strong> "Files: data/sales.csv, data/inventory.csv, data/returns.csv"<br><br>
+
+<strong>Assistant:</strong> "Now I'll load data/sales.csv instead: [proposes corrected code]"<br><br>
+
+<strong>Code Executor:</strong> "Success! Generated visualization.png"<br><br>
+
+<strong>Assistant:</strong> "Done. Your sales data shows a 23% increase in Q4. Visualization saved."<br><br>
+
+</blockquote>
+
+<p>No human told it which file to use. The agents figured it out together through conversation.</p>
+
+<h2>Why This Is Better Than Orchestration</h2>
+
+<p><strong>Orchestration (HuggingGPT):</strong></p>
+<ul>
+<li>One LLM makes all decisions.</li>
+<li>If the LLM makes a wrong choice, the pipeline fails.</li>
+<li>Limited parallelism (one decision at a time).</li>
+</ul>
+
+<p><strong>Conversation (AutoGen):</strong></p>
+<ul>
+<li>Multiple agents propose and critique.</li>
+<li>Errors get caught and corrected mid-flow.</li>
+<li>Can parallelize (multiple agents working simultaneously).</li>
+<li>More robust (if one agent's idea fails, others propose alternatives).</li>
+</ul>
+
+<h2>The Loop: Conversation Until Termination</h2>
+
+<p>AutoGen's core loop:</p>
+
+<ol>
+<li><strong>Agent A sends a message:</strong> "Here's my proposal..."</li>
+<li><strong>Agent B receives and responds:</strong> "I see issues with X. Try this instead."</li>
+<li><strong>Agent C (executor) runs it:</strong> "That worked. Results: ..."</li>
+<li><strong>Agent A synthesizes:</strong> "Great. Here's the final answer."</li>
+<li><strong>Repeat until:</strong> Goal achieved or max conversation turns hit.</li>
+</ol>
+
+<p>Each agent has a system prompt defining its role. They communicate through a message bus. The conversation is logged, so you can audit the reasoning.</p>
+
+<h2>Real-World Uses (Today)</h2>
+
+<ul>
+<li><strong>Code generation:</strong> LLM proposes → Code executor tests → Bugs fixed in conversation.</li>
+<li><strong>Data analysis:</strong> Assistant proposes analysis → Code executor runs it → Results interpreted.</li>
+<li><strong>Report writing:</strong> Researcher agent proposes outline → Writer agent expands → Critic agent catches errors → Final review.</li>
+<li><strong>Technical support:</strong> Diagnosis agent proposes a fix → Executor applies it → Monitor agent checks if it worked.</li>
+</ul>
+
+<h2>The Challenges</h2>
+
+<p><strong>1. Convergence:</strong> Will the agents' conversation ever end? Or will they talk in circles?</p>
+<p>Solution: Set max turns, require approval before major actions, or have a "done" condition.</p>
+
+<p><strong>2. Cost:</strong> Multiple agents = multiple LLM calls = more expensive.</p>
+<p>Solution: Use cheaper models for execution, stronger models for reasoning.</p>
+
+<p><strong>3. Alignment:</strong> What if agents have conflicting goals?</p>
+<p>Solution: Make goals explicit in system prompts; use a critic agent to arbitrate.</p>
+
+<h2>Modern Evolution</h2>
+<p>Frameworks like <strong>CrewAI, LangGraph, and AutoGen v0.2+</strong> have made multi-agent systems easier to build and deploy. The conversation pattern is now standard.</p>
+
+<h2>What You Take Away</h2>
+
+<ul>
+<li>Conversation between agents is more robust than one agent making all decisions.</li>
+<li>Each agent needs a clear role, defined in its system prompt.</li>
+<li>Conversation loops until success or a termination condition.</li>
+<li>You can audit the reasoning by looking at the conversation log.</li>
+<li>This scales: 2 agents, 5 agents, 20 agents — the principle holds.</li>
+<li>Real systems use this pattern today.</li>
+</ul>
+
+<div class="sources" style="margin-top:40px; padding-top:20px; border-top:1px solid #232838;">
+<strong>Sources & Further Reading:</strong><br>
+• Wu, Q., et al. (2023). "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation Framework." <em>arXiv:2308.08155</em><br>
+• <a href="https://arxiv.org/abs/2308.08155">Full paper on arXiv</a>
+</div>
+</article>
+</main>
+
+<footer style="text-align:center; color:#9aa3b2; font-size:.85rem; padding:30px 20px; border-top:1px solid #232838;">
+  Built by Kushagra · Signal/Noise · <a href="https://github.com/KushagraGitter/tech-blog" style="color:#9aa3b2;">Source on GitHub</a>
+</footer>
+</body>
+</html>

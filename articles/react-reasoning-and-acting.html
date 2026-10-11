@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReAct: When AI Thinks AND Acts</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="https://github.com/KushagraGitter" target="_blank">GitHub</a>
+  </nav>
+</header>
+
+<main style="max-width:860px; margin:0 auto; padding:40px 20px 80px;">
+<a class="backlink" href="../index.html">← Back</a>
+
+<article class="post">
+<h1>ReAct: When AI Thinks AND Acts</h1>
+<div class="meta">October 11, 2026 · 5 min read</div>
+<span class="tag">AI</span><span class="tag">Agents</span><span class="tag">Prompting</span>
+
+<p>Chain-of-thought taught AI models to reason. ReAct taught them to <strong>reason, then take action, then observe what happened, then reason again.</strong></p>
+
+<p>It's the loop that powers every modern AI agent.</p>
+
+<h2>The Problem with Pure Reasoning</h2>
+<p>An AI that only reasons is like a person stuck in their head with no way to act. You can ask it "What's the weather right now?" and it'll reason its way through "I don't have real-time data" — but it can't actually check the weather.</p>
+
+<p>Chain-of-thought solved reasoning. But the real world needs <strong>reasoning + action.</strong></p>
+
+<h2>The ReAct Loop</h2>
+<p>ReAct stands for <strong>"Reasoning + Acting."</strong> The idea is beautifully simple:</p>
+
+<ol>
+<li><strong>Thought:</strong> The AI reasons about what to do next.</li>
+<li><strong>Action:</strong> The AI calls a tool or API (search the web, check email, run code).</li>
+<li><strong>Observation:</strong> The AI sees the result and updates its understanding.</li>
+<li><strong>Repeat:</strong> Loop back to Thought with new information.</li>
+</ol>
+
+<p><strong>Example:</strong> You ask "Who won the 2024 Super Bowl?"</p>
+<ul>
+<li><strong>Thought:</strong> "I don't know who won recently. I should search for this."</li>
+<li><strong>Action:</strong> Search("2024 Super Bowl winner")</li>
+<li><strong>Observation:</strong> "Kansas City Chiefs defeated San Francisco 49ers, 25-22"</li>
+<li><strong>Thought:</strong> "Now I have the answer. I can respond."</li>
+</ul>
+
+<p>This is what makes ChatGPT's "browsing" and Claude's "tool use" actually work. It's ReAct.</p>
+
+<h2>Why It's Better Than the Alternative</h2>
+<p>Before ReAct, most systems had two paths:</p>
+<ul>
+<li><strong>Direct reasoning:</strong> "Based on what I know, the answer is X." (Often wrong for current events.)</li>
+<li><strong>External search:</strong> Always query a database first, then answer. (Wastes time and tokens on simple questions.)</li>
+</ul>
+
+<p>ReAct is smarter: the AI <strong>decides</strong> when it needs to act. For "What's 2+2?" it just reasons. For "What's happening in tech news today?" it searches. For "Send me an email summary of my inbox" it reasons about what to search for, then takes actions, then aggregates.</p>
+
+<h2>The Challenges</h2>
+<p>ReAct sounds simple, but there are three hard problems:</p>
+
+<ol>
+<li><strong>Tool selection:</strong> How does the AI know which tool to call? You have to give it a clear list of what's available, and the AI has to choose correctly.</li>
+<li><strong>Error handling:</strong> What if the search fails? What if the API is down? The model has to reason about that and try something else.</li>
+<li><strong>Token cost:</strong> Every observation gets added back to the context. A 5-step ReAct loop can double your token usage.</li>
+</ol>
+
+<h2>Where ReAct Is Winning</h2>
+<ul>
+<li><strong>Customer support agents:</strong> "Check the order status" → search database → observe → respond.</li>
+<li><strong>Data analysis:</strong> "Summarize my sales data" → query database → observe → calculate → respond.</li>
+<li><strong>Web agents:</strong> "Buy me a plane ticket" → search flights → click result → fill form → pay.</li>
+<li><strong>Coding:</strong> "Debug this error" → run code → observe crash → edit file → run again.</li>
+</ul>
+
+<h2>The Future: Self-Correcting Agents</h2>
+<p>ReAct's real superpower is that it can <strong>verify and correct itself.</strong> If the action didn't produce the right result, the AI can loop back and try something different — without human intervention.</p>
+
+<p>That's the foundation for agents that actually work autonomously.</p>
+
+<h2>What You Take Away</h2>
+<ul>
+<li>Reasoning without action is incomplete.</li>
+<li>The best AI agents alternate between thinking and doing.</li>
+<li>Every tool you expose to an AI needs to be clearly described (what it does, when to use it, what it returns).</li>
+<li>The loop continues until the goal is achieved — or until it fails and gives up.</li>
+</ul>
+
+<div class="sources" style="margin-top:40px; padding-top:20px; border-top:1px solid #232838;">
+<strong>Sources & Further Reading:</strong><br>
+• Yao, S., et al. (2022). "ReAct: Synergizing Reasoning and Acting in Language Models." <em>arXiv:2210.03629</em><br>
+• <a href="https://arxiv.org/abs/2210.03629">Full paper on arXiv</a>
+</div>
+</article>
+</main>
+
+<footer style="text-align:center; color:#9aa3b2; font-size:.85rem; padding:30px 20px; border-top:1px solid #232838;">
+  Built by Kushagra · Signal/Noise · <a href="https://github.com/KushagraGitter/tech-blog" style="color:#9aa3b2;">Source on GitHub</a>
+</footer>
+</body>
+</html>

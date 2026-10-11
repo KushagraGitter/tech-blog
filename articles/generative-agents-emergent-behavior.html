@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generative Agents: 25 AI Characters Simulate a Whole Village</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="https://github.com/KushagraGitter" target="_blank">GitHub</a>
+  </nav>
+</header>
+
+<main style="max-width:860px; margin:0 auto; padding:40px 20px 80px;">
+<a class="backlink" href="../index.html">← Back</a>
+
+<article class="post">
+<h1>Generative Agents: When 25 AIs Build a Village</h1>
+<div class="meta">October 11, 2026 · 6 min read</div>
+<span class="tag">AI</span><span class="tag">Simulation</span><span class="tag">Emergent Behavior</span>
+
+<p>In 2023, Stanford researchers did something strange: they created 25 AI agents, gave each one a role and a goal, and let them simulate a day in a virtual village. What happened was eerie: the agents organized a birthday party, went to work, made friends, and held a conversation — all without being told to do any of it.</p>
+
+<p>This is the paper that showed AI agents can <strong>do things nobody programmed them to do.</strong></p>
+
+<h2>The Setup</h2>
+<p>Each agent got:</p>
+<ul>
+<li>A name and personality</li>
+<li>A memory system (what happened to them)</li>
+<li>Current context (who's around, what time is it)</li>
+<li>A goal (get to work, have dinner, sleep)</li>
+</ul>
+
+<p>Then the researchers let them interact. The agents could observe each other, send messages, and plan together. No human told them what to do. No script. No behavior tree. Just: "Go about your day."</p>
+
+<h2>What Actually Happened</h2>
+<p>By 11 AM, an agent named Klaus decided to throw a birthday party. He invited guests. Other agents decided to attend. By evening, a group had showed up, they'd had conversations, and Klaus's birthday was celebrated — all emergent from individual agent goals colliding.</p>
+
+<p>This happened because:</p>
+<ol>
+<li>Klaus wanted to do something social (his personality).</li>
+<li>He remembered it was his partner's birthday (his memory).</li>
+<li>He saw other agents around (his observation).</li>
+<li>He decided to invite them (his reasoning).</li>
+<li>They decided to go (their own reasoning).</li>
+</ol>
+
+<p><strong>Nobody wrote a "birthday party" behavior. It emerged from agents pursuing their own goals and observing each other.</strong></p>
+
+<h2>Why This Matters</h2>
+<p>This is the difference between:</p>
+<ul>
+<li><strong>Scripted behavior:</strong> "If it's 7 PM, eat dinner." (Rigid, predictable, boring.)</li>
+<li><strong>Emergent behavior:</strong> "I'm hungry, but I see someone I like is cooking, so I'll go help them cook, then eat together." (Adaptive, surprising, human-like.)</li>
+</ul>
+
+<p>The second requires no script. It emerges from agents reasoning about their own goals in a social context.</p>
+
+<h2>The Architecture</h2>
+<p>Each agent had three layers:</p>
+
+<ol>
+<li><strong>Memory:</strong> A database of everything that happened to them ("Yesterday I talked to Jessica about gardening").</li>
+<li><strong>Reflection:</strong> The agent periodically reads its memory and synthesizes insights ("I like gardening and talking to Jessica").</li>
+<li><strong>Planning:</strong> Based on its synthesis, the agent plans its next actions ("I should invite Jessica to help with my garden").</li>
+</ol>
+
+<p>This loop — memory → reflection → planning — is now a standard pattern for multi-agent systems.</p>
+
+<h2>The Implications (Good and Bad)</h2>
+<p><strong>Good:</strong></p>
+<ul>
+<li>Agents can model complex social dynamics.</li>
+<li>You don't need to script every interaction.</li>
+<li>Games, simulations, and narrative games could get way more creative.</li>
+</ul>
+
+<p><strong>Bad:</strong></p>
+<ul>
+<li>Agents can coordinate in ways you didn't predict.</li>
+<li>If they have misaligned goals, they might collude against you.</li>
+<li>The more agents, the harder to predict what happens.</li>
+<li>Scaling to thousands of agents becomes computationally expensive.</li>
+</ul>
+
+<h2>Real-World Use Cases (Today)</h2>
+<ul>
+<li><strong>Game NPCs:</strong> Instead of scripted dialogue trees, NPCs could have memory and goals.</li>
+<li><strong>Crowd simulation:</strong> Simulating evacuations or market dynamics with realistic agent behaviors.</li>
+<li><strong>Research:</strong> Understanding how societies behave; testing policy changes in simulation before the real world.</li>
+</ul>
+
+<h2>What You Take Away</h2>
+<ul>
+<li>Agents with memory + reasoning can coordinate without central control.</li>
+<li>Emergent behavior is powerful but unpredictable.</li>
+<li>The more agents interact, the harder it is to reason about what happens.</li>
+<li>This is both an opportunity (rich simulations) and a risk (uncontrolled emergence).</li>
+</ul>
+
+<div class="sources" style="margin-top:40px; padding-top:20px; border-top:1px solid #232838;">
+<strong>Sources & Further Reading:</strong><br>
+• Park, J. S., et al. (2023). "Generative Agents: Interactive Simulacra of Human Behavior." <em>arXiv:2304.03442</em><br>
+• <a href="https://arxiv.org/abs/2304.03442">Full paper on arXiv</a>
+</div>
+</article>
+</main>
+
+<footer style="text-align:center; color:#9aa3b2; font-size:.85rem; padding:30px 20px; border-top:1px solid #232838;">
+  Built by Kushagra · Signal/Noise · <a href="https://github.com/KushagraGitter/tech-blog" style="color:#9aa3b2;">Source on GitHub</a>
+</footer>
+</body>
+</html>

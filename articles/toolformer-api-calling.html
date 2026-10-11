@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toolformer: Teaching AI When to Call APIs</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="https://github.com/KushagraGitter" target="_blank">GitHub</a>
+  </nav>
+</header>
+
+<main style="max-width:860px; margin:0 auto; padding:40px 20px 80px;">
+<a class="backlink" href="../index.html">← Back</a>
+
+<article class="post">
+<h1>Toolformer: Teaching AI When to Call APIs</h1>
+<div class="meta">October 11, 2026 · 5 min read</div>
+<span class="tag">AI</span><span class="tag">Tools</span><span class="tag">APIs</span>
+
+<p>ReAct showed that AI can act. But there's a bigger question: <strong>How does an AI learn which tool to call and when?</strong></p>
+
+<p>Toolformer answers that by letting the model train itself on its own tool calls.</p>
+
+<h2>The Problem: Humans Were Deciding</h2>
+<p>With ReAct, a human has to manually decide what tools are available and explicitly tell the model "Here are your options: search, calculator, database." The model picks from a curated menu.</p>
+
+<p>But what if the model could learn when to use tools automatically? What if it could figure out <strong>"I need a calculator here" or "I need to search the web here"</strong> on its own?</p>
+
+<h2>Toolformer's Insight</h2>
+<p>Meta researchers (Schick et al., 2023) trained a model to use tools by:</p>
+
+<ol>
+<li><strong>Let it generate tool calls:</strong> The model learns a special syntax like <code>[CALCULATOR(2+2)]</code> embedded in its output.</li>
+<li><strong>Execute those calls:</strong> When the model outputs that syntax, you actually run the tool and return the result.</li>
+<li><strong>Self-supervise:</strong> The model checks if the tool call helped improve its answer. If it did, keep it. If it didn't, ignore it.</li>
+</ol>
+
+<p><strong>Example:</strong></p>
+<blockquote>
+User: "What's 47 × 83?"<br><br>
+Model generates: "I need to calculate this. [CALCULATOR(47 × 83)] = 3901. So the answer is 3901."<br><br>
+Then the model checks: "Did calling the calculator make my answer better? Yes, because I was right." So it learns to use it in future math problems.
+</blockquote>
+
+<h2>Why This Is Better Than ReAct</h2>
+<p><strong>ReAct:</strong> A human tells the model what tools exist. The model picks from the menu you gave it.</p>
+
+<p><strong>Toolformer:</strong> The model learns which tools help it, and trains itself to use them at the right moments.</p>
+
+<p>Toolformer is more autonomous. It doesn't need someone to say "You can use a calculator." It learns "I should use a calculator when there's a math problem."</p>
+
+<h2>The Trade-Off</h2>
+<p><strong>Toolformer wins on:</strong></p>
+<ul>
+<li>Generalization (the model learns deep patterns about when tools help)</li>
+<li>Autonomy (no manual tool curation needed)</li>
+<li>Scalability (it learns from lots of tools at once)</li>
+</ul>
+
+<p><strong>ReAct still wins on:</strong></p>
+<ul>
+<li>Control (you decide exactly what's available)</li>
+<li>Safety (you can restrict what an untrusted model calls)</li>
+<li>Simplicity (no training needed)</li>
+</ul>
+
+<h2>Real-World Impact</h2>
+<p>In practice, modern systems use a hybrid:</p>
+<ul>
+<li><strong>Give the model a menu of tools</strong> (ReAct-style)</li>
+<li><strong>Let it learn through in-context examples</strong> how those tools help (Toolformer-style)</li>
+<li><strong>Let it self-correct</strong> if a tool call didn't work</li>
+</ul>
+
+<p>This is how ChatGPT's "code interpreter" and Claude's "tool use" actually work — curated tools + learned patterns of when to use them.</p>
+
+<h2>The Open Question</h2>
+<p>Toolformer trains on simple tasks. What happens when you scale it to thousands of tools? Or when tools have unintended side effects? That's still being researched.</p>
+
+<p>There's also a safety question: If a model learns to use tools autonomously, what stops it from using them in ways you didn't intend?</p>
+
+<h2>What You Take Away</h2>
+<ul>
+<li>APIs are data. Models can learn when to call them.</li>
+<li>Self-supervision (the model checking if its own actions helped) is powerful and cheaper than human labeling.</li>
+<li>The best systems combine explicit tool curation with learned tool patterns.</li>
+<li>The model needs feedback (did the tool call help?) to learn, not just permission to call tools.</li>
+</ul>
+
+<div class="sources" style="margin-top:40px; padding-top:20px; border-top:1px solid #232838;">
+<strong>Sources & Further Reading:</strong><br>
+• Schick, T., et al. (2023). "Toolformer: Language Models Can Teach Themselves to Use Tools." <em>arXiv:2302.04761</em><br>
+• <a href="https://arxiv.org/abs/2302.04761">Full paper on arXiv</a>
+</div>
+</article>
+</main>
+
+<footer style="text-align:center; color:#9aa3b2; font-size:.85rem; padding:30px 20px; border-top:1px solid #232838;">
+  Built by Kushagra · Signal/Noise · <a href="https://github.com/KushagraGitter/tech-blog" style="color:#9aa3b2;">Source on GitHub</a>
+</footer>
+</body>
+</html>

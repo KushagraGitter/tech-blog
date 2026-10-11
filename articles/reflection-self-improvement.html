@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reflection: How AI Learns Without Retraining</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="https://github.com/KushagraGitter" target="_blank">GitHub</a>
+  </nav>
+</header>
+
+<main style="max-width:860px; margin:0 auto; padding:40px 20px 80px;">
+<a class="backlink" href="../index.html">← Back</a>
+
+<article class="post">
+<h1>Reflection: How AI Learns Without Retraining</h1>
+<div class="meta">October 11, 2026 · 5 min read</div>
+<span class="tag">AI</span><span class="tag">Learning</span><span class="tag">Improvement</span>
+
+<p>Until recently, the only way an AI model improved was through retraining: collect data, adjust weights, ship a new version. That takes weeks and millions of dollars.</p>
+
+<p><strong>Reflection</strong> changes that. It lets a deployed AI agent improve itself by thinking about what went wrong.</p>
+
+<h2>The Problem: No In-Context Learning</h2>
+<p>When a model makes a mistake, it doesn't learn from it. Ask GPT-4 "What's 2+2?" and it says "5," and then ask it the same question again — it might still say "5." It doesn't have the mechanism to update its behavior based on that failure.</p>
+
+<p>(Of course, GPT-4 wouldn't fail on 2+2, but you get the idea.)</p>
+
+<h2>Reflection's Solution</h2>
+<p>The insight: <strong>Tell the AI what went wrong, and let it figure out how to do better next time.</strong></p>
+
+<p>The flow:</p>
+
+<ol>
+<li><strong>Agent tries a task:</strong> "Write a poem about robots"</li>
+<li><strong>Task fails or is criticized:</strong> "That poem is too long and doesn't rhyme."</li>
+<li><strong>Agent reflects:</strong> "I was too verbose and ignored the rhyme scheme. Next time I should plan the rhyme structure first."</li>
+<li><strong>Agent retries:</strong> Applies that insight to the next attempt.</li>
+</ol>
+
+<p>No retraining. No weight updates. Just in-context learning through explicit feedback and reflection.</p>
+
+<h2>How It Works in Practice</h2>
+<p>Most reflection systems follow this pattern:</p>
+
+<ol>
+<li><strong>Attempt:</strong> Agent generates an output (answer, code, creative work).</li>
+<li><strong>Evaluation:</strong> Check if it's right (automated test, human feedback, or consistency check).</li>
+<li><strong>Feedback:</strong> If it failed, provide specific feedback: "Your code has a bug on line 3" or "Your answer is factually incorrect because..."</li>
+<li><strong>Reflection prompt:</strong> "What went wrong? How should you approach this differently?"</li>
+<li><strong>Next attempt:</strong> The agent tries again with its new understanding in context.</li>
+<li><strong>Repeat:</strong> Keep going until it succeeds.</li>
+</ol>
+
+<h2>Why It Works</h2>
+<p>Three reasons:</p>
+
+<ul>
+<li><strong>Explicit reasoning about failure:</strong> The model isn't just penalized (like in training); it's asked to diagnose why it failed. That diagnosis shapes the next attempt.</li>
+<li><strong>No retraining cost:</strong> You ship a base model once. Reflection happens at runtime, in the user's context.</li>
+<li><strong>Task-specific improvement:</strong> Different users, different tasks = different reflections. The model adapts to what YOU need, not what the training data needed.</li>
+</ul>
+
+<h2>The Limits</h2>
+<p>Reflection isn't magic. It has three big constraints:</p>
+
+<ol>
+<li><strong>Context window:</strong> Each reflection adds tokens to the conversation. After 5-10 feedback loops, you run out of context.</li>
+<li><strong>Error blindness:</strong> If the model doesn't understand WHY it's failing, reflection won't help. "Your answer is wrong" is useless; "Your answer is wrong because you calculated 2+2 as 5 instead of 4" is useful.</li>
+<li><strong>Fundamental capability:</strong> Reflection can't teach the model something it's not capable of. It can't teach a model to do calculus if it doesn't understand the basics.</li>
+</ol>
+
+<h2>Real-World Impact</h2>
+<ul>
+<li><strong>Code generation:</strong> Claude and ChatGPT use reflection internally (they can see if their code compiles and reflect on why not).</li>
+<li><strong>Iterative writing:</strong> Models improve essays through user feedback and reflection.</li>
+<li><strong>Multi-step reasoning:</strong> Models work through hard problems, spot mistakes, and correct themselves.</li>
+</ul>
+
+<h2>The Future: Self-Correction at Scale</h2>
+<p>The next frontier: <strong>Can agents reflect without human feedback?</strong> Can they generate their own test cases, run them, observe failures, and improve? Early work (like <strong>Voyager</strong>, in the next article) suggests yes — but at significant computational cost.</p>
+
+<h2>What You Take Away</h2>
+<ul>
+<li>You don't need to retrain to improve an agent's behavior.</li>
+<li>Explicit feedback + reflection in context can drive significant improvements.</li>
+<li>The feedback needs to be specific and diagnostic, not just "right/wrong."</li>
+<li>Reflection is bounded by the model's fundamental capabilities and context window.</li>
+<li>This is how real deployed AI systems improve without being updated.</li>
+</ul>
+
+<div class="sources" style="margin-top:40px; padding-top:20px; border-top:1px solid #232838;">
+<strong>Sources & Further Reading:</strong><br>
+• Shinn, N., et al. (2023). "Reflexion: Language Agents with Verbal Reinforcement Learning." <em>arXiv:2303.11366</em><br>
+• <a href="https://arxiv.org/abs/2303.11366">Full paper on arXiv</a>
+</div>
+</article>
+</main>
+
+<footer style="text-align:center; color:#9aa3b2; font-size:.85rem; padding:30px 20px; border-top:1px solid #232838;">
+  Built by Kushagra · Signal/Noise · <a href="https://github.com/KushagraGitter/tech-blog" style="color:#9aa3b2;">Source on GitHub</a>
+</footer>
+</body>
+</html>

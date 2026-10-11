@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Survey on LLM-Based Autonomous Agents: Putting It All Together</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="https://github.com/KushagraGitter" target="_blank">GitHub</a>
+  </nav>
+</header>
+
+<main style="max-width:860px; margin:0 auto; padding:40px 20px 80px;">
+<a class="backlink" href="../index.html">← Back</a>
+
+<article class="post">
+<h1>Survey on LLM-Based Autonomous Agents: The Architecture Handbook</h1>
+<div class="meta">October 11, 2026 · 7 min read</div>
+<span class="tag">AI</span><span class="tag">Survey</span><span class="tag">Architecture</span>
+
+<p>We've covered 9 individual ideas. Now we zoom out: <strong>What are all the building blocks of a modern AI agent, and how do they fit together?</strong></p>
+
+<p>That's what this survey does. It's the handbook.</p>
+
+<h2>The Universal Agent Architecture</h2>
+
+<p>Most agent designs have these components:</p>
+
+<ol>
+<li><strong>Perception:</strong> The agent observes the world (sensors, APIs, text input).</li>
+<li><strong>Memory:</strong> The agent stores what happened.</li>
+<li><strong>Planning:</strong> The agent decides what to do next.</li>
+<li><strong>Action:</strong> The agent does something (calls an API, runs code, talks to a human).</li>
+<li><strong>Reflection:</strong> The agent observes the result and updates its understanding.</li>
+</ol>
+
+<p>Loop back to step 1. This is the cycle that powers every agent.</p>
+
+<h2>Building Block 1: Planning (The Brain)</h2>
+
+<p><strong>Chain-of-Thought:</strong> Step-by-step reasoning.<br>
+<strong>Tree of Thoughts:</strong> Explore multiple paths; backtrack if needed.<br>
+<strong>ReAct:</strong> Interleave reasoning with action.</p>
+
+<p><strong>When to use which:**</p>
+<ul>
+<li>Simple problems → CoT</li>
+<li>Complex problems with multiple paths → ToT</li>
+<li>Problems needing real-time action → ReAct</li>
+</ul>
+
+<h2>Building Block 2: Tool Use (The Hands)</h2>
+
+<p><strong>Toolformer:</strong> Learn which tools to use.<br>
+<strong>HuggingGPT:</strong> Orchestrate multiple specialized models.<br>
+<strong>ReAct:</strong> Take actions and observe results.</p>
+
+<p><strong>When to use which:**</p>
+<ul>
+<li>Limited, curated tools → ReAct</li>
+<li>Learn to use tools automatically → Toolformer</li>
+<li>Orchestrate many specialized models → HuggingGPT</li>
+</ul>
+
+<h2>Building Block 3: Memory (The Record)</h2>
+
+<p><strong>Short-term:</strong> What just happened (last few messages).<br>
+<strong>Long-term:</strong> What happened before (vector database, skill library).<br>
+<strong>Meta-memory:</strong> Reflections on what you learned.</p>
+
+<p><strong>Implementation:**</p>
+<ul>
+<li>Vector database for semantic search ("Recall tasks similar to this").</li>
+<li>Skill library (like Voyager) for reusable procedures.</li>
+<li>Episodic memory for stories ("Remember when X happened?").</li>
+</ul>
+
+<h2>Building Block 4: Learning & Improvement (The Growth)</h2>
+
+<p><strong>Reflection:</strong> Learn from feedback without retraining.<br>
+<strong>Voyager:</strong> Continuous learning with goal generation.<br>
+<strong>In-context learning:</strong> Improve within a conversation.</li>
+
+<p><strong>When to use which:**</p>
+<ul>
+<li>Quick improvement on a task → Reflection + in-context learning</li>
+<li>Long-term, open-ended improvement → Voyager-style curriculum</li>
+<li>Offline improvement → Fine-tuning (not covered here but important)</li>
+</ul>
+
+<h2>Building Block 5: Multi-Agent Coordination (The Team)</h2>
+
+<p><strong>Generative Agents:</strong> Emergent behavior from individual agents.<br>
+<strong>AutoGen:</strong> Agents collaborating through conversation.<br>
+<strong>Swarms:</strong> Many simple agents solving complex problems together.</p>
+
+<p><strong>When to use which:**</p>
+<ul>
+<li>Agents with individual goals → Generative Agents</li>
+<li>Agents with complementary roles → AutoGen</li>
+<li>Scale to hundreds of agents → Swarms (research frontier)</li>
+</ul>
+
+<h2>The Complete Agent: A Reference Architecture</h2>
+
+<pre style="background:#1c2335; padding:16px; border-radius:8px; color:#d6dae3; font-size:0.9rem; overflow-x:auto;">
+┌─────────────────────────────────────┐
+│  INPUT (Goal, Observation, Memory)  │
+└────────────────┬────────────────────┘
+                 │
+         ┌───────▼────────┐
+         │  PLANNING      │
+         │  (CoT / ToT)   │
+         └───────┬────────┘
+                 │
+         ┌───────▼──────────┐
+         │ TOOL SELECTION   │
+         │ (Which API/tool) │
+         └───────┬──────────┘
+                 │
+         ┌───────▼───────────┐
+         │ ACTION EXECUTION  │
+         │ (Call tool, code) │
+         └───────┬───────────┘
+                 │
+         ┌───────▼──────────────┐
+         │ OBSERVATION &        │
+         │ REFLECTION           │
+         │ (Did it work? Learn) │
+         └───────┬──────────────┘
+                 │
+         ┌───────▼────────┐
+         │ MEMORY UPDATE  │
+         │ (Store outcome)│
+         └───────┬────────┘
+                 │
+        ┌────────▼─────────┐
+        │ Goal achieved?   │
+        │ Return output    │
+        └──────────────────┘
+</pre>
+
+<h2>What Makes a Good Agent</h2>
+
+<p><strong>1. Clear decomposition:</strong> Break goals into sub-tasks (HuggingGPT, AutoGen)</p>
+
+<p><strong>2. Good memory:</strong> Remember what worked (Voyager's skill library, Generative Agents' episodic memory)</p>
+
+<p><strong>3. Explicit feedback loops:</strong> Observe results and adjust (Reflection, ReAct)</p>
+
+<p><strong>4. Graceful degradation:</strong> If a tool fails, try another path (Tree of Thoughts, ReAct with backtracking)</p>
+
+<p><strong>5. Bounded execution:</strong> Know when to stop (termination conditions, max tokens, user approval)</p>
+
+<h2>Design Decisions: A Checklist</h2>
+
+<p>When building an agent, ask:</p>
+
+<ul>
+<li><strong>Planning:</strong> Does it need to explore multiple options (ToT) or just reason linearly (CoT)?</li>
+<li><strong>Actions:</strong> How many tools? How often does it act?</li>
+<li><strong>Memory:</strong> How long? Vector DB or skill library or both?</li>
+<li><strong>Learning:</strong> Improve on the fly (Reflection) or long-term (Voyager)?</li>
+<li><strong>Multi-agent:</strong> Solo agent or team? If team, who talks to whom?</li>
+<li><strong>Safety:</strong> Who approves major actions? What's the fallback?</li>
+</ul>
+
+<h2>The Frontier: Open Questions</h2>
+
+<p><strong>1. Scaling:</strong> Do these techniques work with 100+ agents? 1000+?</p>
+
+<p><strong>2. Safety:</strong> When agents get smarter, how do we keep them aligned?</p>
+
+<p><strong>3. Emergence:</strong> Multi-agent systems surprise us (Generative Agents throwing a birthday party). Can we predict or control it?</p>
+
+<p><strong>4. Real-world deployment:</strong> These papers mostly work in simulation or narrow domains. How do they work in messy, real-world environments?</p>
+
+<p><strong>5. Efficiency:</strong> Token cost is high. Can we get the same results with fewer calls?</p>
+
+<h2>What You Take Away</h2>
+
+<ul>
+<li>Modern agents combine 5 building blocks: planning, tools, memory, learning, and (optionally) multi-agent coordination.</li>
+<li>Each building block has design trade-offs (fast vs. accurate, cheap vs. capable, etc.).</li>
+<li>The papers you've learned aren't competing — they're pieces of a larger puzzle.</li>
+<li>Combining them intelligently produces agents that work in the real world.</li>
+<li>The frontier isn't solved — scaling, safety, and emergence are still open problems.</li>
+</ul>
+
+<h2>Next Steps</h2>
+
+<p><strong>To learn more:</strong></p>
+<ul>
+<li>Implement each technique in a small project.</li>
+<li>Combine 2-3 techniques and see how they interact.</li>
+<li>Read the full papers (arXiv links below) to understand the nuances.</li>
+<li>Study frameworks that implement these ideas: <strong>LangChain, AutoGen, CrewAI, LangGraph.</strong></li>
+</ul>
+
+<p><strong>To build agents:</strong></p>
+<ul>
+<li>Start simple: CoT + one tool + reflection.</li>
+<li>Add complexity: ToT, more tools, memory, multi-agent.</li>
+<li>Measure success: Does the agent complete tasks? Is it cost-effective? Is it safe?</li>
+</ul>
+
+<div class="sources" style="margin-top:40px; padding-top:20px; border-top:1px solid #232838;">
+<strong>Sources & Further Reading:</strong><br>
+• Xi, Z., et al. (2023). "Autonomous Agents: A Survey." <em>arXiv:2308.11432</em><br>
+• <a href="https://arxiv.org/abs/2308.11432">Full survey on arXiv</a><br><br>
+
+<strong>The 10 Papers in Order:</strong><br>
+1. <a href="chain-of-thought-prompting-explained.html">Chain-of-Thought Prompting</a><br>
+2. <a href="react-reasoning-and-acting.html">ReAct</a><br>
+3. <a href="toolformer-api-calling.html">Toolformer</a><br>
+4. <a href="generative-agents-emergent-behavior.html">Generative Agents</a><br>
+5. <a href="reflection-self-improvement.html">Reflection</a><br>
+6. <a href="tree-of-thoughts-reasoning.html">Tree of Thoughts</a><br>
+7. <a href="hugginggpt-orchestration.html">HuggingGPT</a><br>
+8. <a href="voyager-lifelong-learning.html">Voyager</a><br>
+9. <a href="autogen-multi-agent-collaboration.html">AutoGen</a><br>
+10. This survey
+</div>
+</article>
+</main>
+
+<footer style="text-align:center; color:#9aa3b2; font-size:.85rem; padding:30px 20px; border-top:1px solid #232838;">
+  Built by Kushagra · Signal/Noise · <a href="https://github.com/KushagraGitter/tech-blog" style="color:#9aa3b2;">Source on GitHub</a>
+</footer>
+</body>
+</html>
