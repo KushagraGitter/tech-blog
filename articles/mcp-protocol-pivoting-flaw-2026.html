@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP, the Protocol Wiring Every AI Agent Together, Has a Trust Problem — Signal/Noise</title>
+<meta name="description" content="Google, JPMorgan Chase, Rapid7 and two governments all independently shipped the same flaw in Model Context Protocol servers — a structural trust gap researchers are calling 'protocol pivoting.'">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav><a href="../index.html">Home</a></nav>
+</header>
+<main>
+  <a class="backlink" href="../index.html">&larr; Back to all posts</a>
+  <article class="post">
+    <h1>MCP, the Protocol Wiring Every AI Agent Together, Has a Trust Problem Nobody Designed For</h1>
+    <div class="meta">October 11, 2026 · Kushagra · 8 min read</div>
+
+    <p>Model Context Protocol — MCP — is the plumbing almost nobody outside of AI infrastructure teams has heard of, and in the last five months it has quietly become the thing that broke the same way, independently, at Google, JPMorgan Chase, the vector-database company Weaviate, the security firm Rapid7, France's interministerial digital directorate (DINUM), and the city government of Tangerang, Indonesia. None of these organizations share code, ownership, or even a sector. They all shipped the identical class of vulnerability anyway. That's the story Ars Technica's Dan Goodin broke this week, and it's the one spreading fastest through security circles right now because it isn't about one company's mistake — it's about a protocol-level design gap that nobody has a clean fix for.</p>
+
+    <h2>What actually broke</h2>
+    <p>MCP is the standard that lets AI agents call tools, pull data, and talk to other agents inside an internal network — effectively the wiring diagram behind most "agentic AI" deployments shipping in 2026. Independent researcher Syed Anas Mohiuddin spent months probing real-world MCP deployments and found the same structural issue everywhere he looked: MCP servers store credentials for each agent, and agents are built to implicitly trust every other internal agent that hands them a task. An exploit that an LLM itself would reject outright sails through once it's dressed up as a normal delegated task from a "trusted" peer agent.</p>
+    <p>Mohiuddin is calling the resulting attack class <strong>"protocol pivoting"</strong>: an attacker plants malicious text somewhere an MCP tool will read it, shapes it to look like a legitimate task for a different inter-agent standard — commonly Google's Agent-to-Agent (A2A) protocol — and an orchestrating agent forwards it downstream to a specialized sub-agent (translation, data analysis, document search) that has few or no guardrails of its own. Because the sub-agent trusts whoever handed it the work, it executes the instructions. He defines it precisely: "a multi-step attack in which an adversary gains initial access through one protocol, exploits trust assumptions between protocols, and escalates to capabilities only accessible via a different protocol."</p>
+
+    <h2>The receipts: real CVEs, real severity scores</h2>
+    <p>This isn't theoretical. Google's own MCP Toolbox for Databases (the <code>googleapis/mcp-toolbox</code> open-source project) shipped an HTTP client with no <code>CheckRedirect</code> policy and no validation of target IP addresses — tracked as <strong>CVE-2026-14540</strong>, rated a high-severity <strong>8.0 out of 10</strong>, affecting versions 0.3.0 through 1.4.0. As Mohiuddin explained it, "a crafted path parameter could make the toolbox follow a redirect to an internal endpoint and send requests on the attacker's behalf" — a classic server-side request forgery (SSRF), the kind of bug that lets an outsider make a trusted internal system send requests it never should. Google's fix added IP allow-lists and block-lists and rejects unsafe base URLs at startup rather than on first request.</p>
+    <p>JPMorgan Chase's open-source documentation-search MCP server had a companion bug: one of its two URL-fetching tools checked domains against an allowlist, but its sibling tool fetched any URL the caller supplied, no questions asked — a component forked from an AWS project that, ironically, never fetched caller-supplied URLs at all in its original form. JPMorgan's Responsible Disclosure team confirmed the medium-severity finding and shipped a fix. Rapid7's own instance, by contrast, drew a low <strong>2.7/10</strong> severity rating for its version of the bug (tracked as CVE-2026-97228) and was patched last month. Weaviate, DINUM, and the Tangerang city government rounded out the list of independently-affected deployments — and reporting from TheOutpost.ai notes that as of this week, five US federal servers running the same flaw pattern remain unpatched.</p>
+
+    <h2>Why security researchers disagree about what to even call it</h2>
+    <p>There's a genuine, substantive argument breaking out among the people who study this for a living. Douglas McKee, director of vulnerability intelligence at Rapid7, frames it as a systemic blind spot: "AI agents give attackers a fresh set of connections to walk across. Someone plants text in content, an agent will read it then pass it along to another agent as a normal delegated task, and that second agent runs it because it trusts whoever handed it the work. Every piece in that chain did exactly what it was designed to do, which is what makes this so tricky to catch. Each protocol was built assuming it lived on its own, so each one checks its own front door while nobody watches the hallway in between."</p>
+    <p>Markus Vervier, a researcher at X41 D-Sec who has separately found critical MCP vulnerabilities in open-source agent packages, pushes back on the new terminology: "For me this is indirect prompt injection. The fact that the malicious prompt can come from a different protocol (e.g., A2A) and manifests when used over another protocol is not strictly required for such attacks to work. It is, of course, unexpected and hard to mitigate in general." Whether you call it "protocol pivoting" or just a cross-protocol flavor of indirect prompt injection, both researchers land on the same practical conclusion: the industry built a federation of AI agents on an assumption — mutual trust between protocols — that was never actually verified anywhere in the stack.</p>
+    <p>That disagreement over naming matters more than it sounds like it should, because a growing academic literature is now backing up the "architectural, not implementation" framing. A security analysis published on arXiv (PROTOAMP / ATTESTMCP) ran 847 controlled attack scenarios across five MCP server implementations and found MCP's architectural choices — including self-asserted, unverified capability declarations and bidirectional "sampling" requests with no origin authentication — amplify attack success rates by 23–41% compared to equivalent non-MCP integrations. In plain terms: this isn't five companies being sloppy. It's a protocol spec with holes that reward exploitation by design.</p>
+
+    <h2>Why it's blowing up this week specifically</h2>
+    <p>MCP has had a rough year of scrutiny already — a critical vulnerability in an open-source MCP package made headlines back in May — but this story is landing harder because of the breadth of victims disclosed in a single report, spanning a search giant, a systemically important bank, a cybersecurity vendor whose entire business is finding exactly this kind of bug, and two sovereign governments. That combination is forcing a conversation that's been easy to postpone: MCP adoption raced ahead of MCP security tooling. Mohiuddin is scheduled to present the full findings at MCPCon North America in San Jose on October 23 — effectively guaranteeing this stays a live story for the AI infrastructure and security communities through the rest of the month.</p>
+
+    <h2>What to watch next</h2>
+    <ul>
+      <li><strong>The five unpatched US federal servers</strong> — will they get fixed before or after MCPCon puts the full technical detail in front of every attacker in the room?</li>
+      <li><strong>Whether MCP's governing spec gets a mandatory security layer</strong> — proposals like ATTESTMCP (capability attestation plus message authentication) claim to cut attack success rates from 52.8% to 12.4% with only ~8.3ms latency overhead; the open question is whether that becomes a backward-compatible protocol amendment or stays an academic paper.</li>
+      <li><strong>Whether other A2A/Agent Network Protocol deployments turn up the same pattern</strong> — Mohiuddin's methodology is now public enough that other researchers can replicate it against their own employer's agent stack, which usually surfaces a second and third wave of disclosures within weeks.</li>
+      <li><strong>Enterprise procurement behavior</strong> — expect security questionnaires for any vendor selling "agentic AI" to start explicitly asking about MCP server redirect policies and inter-agent trust boundaries, the same way SSRF and SSO questions became standard after earlier infrastructure scares.</li>
+    </ul>
+
+    <blockquote>The uncomfortable part isn't that five organizations had a bug. It's that none of them shared code, and all five built the same trust assumption into their agent infrastructure anyway — because the protocol itself never told them not to.</blockquote>
+
+    <p>AI agents talking to other AI agents was supposed to be the efficiency win of 2026. Instead, the first widely-documented structural flaw in how they do it is a reminder that every new communication layer between autonomous systems is also a new place for nobody to be watching the hallway.</p>
+
+    <h3 class="sources">Sources &amp; further reading</h3>
+    <ul class="sources">
+      <li>Ars Technica (Dan Goodin) — "Vulnerability in agents from Google and others exposes structural flaw in MCP" (Oct 2026)</li>
+      <li>TheNextWeb — "Google, JPMorgan and two governments fixed the same MCP flaw"</li>
+      <li>TheOutpost.ai — "Google, JPMorgan and Governments Patch Critical MCP Flaw Exposing AI Agent Security Risks"</li>
+      <li>DigestAI.news — "Researcher finds MCP trust flaw in Google, JP Morgan agents"</li>
+      <li>Syed Anas Mohiuddin — "Protocol Pivoting" research update, anas-security-portfolio.vercel.app</li>
+      <li>Rapid7 vulnerability database — CVE-2026-97228 advisory</li>
+      <li>GitHub Security Advisory — CVE-2026-14540 (googleapis/mcp-toolbox)</li>
+      <li>arXiv preprint — "Breaking the Protocol: Security Analysis of the Model Context Protocol Specification" (PROTOAMP / ATTESTMCP)</li>
+    </ul>
+  </article>
+</main>
+<footer>
+  Signal/Noise · Built by Kushagra
+</footer>
+</body>
+</html>
