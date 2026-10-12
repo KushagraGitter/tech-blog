@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Hacker Used Claude to Breach Korean Banks — Then Asked It to Write His Résumé — Signal/Noise</title>
+<meta name="description" content="CrowdStrike traced an AI-automated breach of South Korean banks to a specific Telegram handle, age, university, and hometown — because the attacker's own Claude Code logs were sitting in an open directory.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav><a href="../index.html">Home</a></nav>
+</header>
+<main>
+  <a class="backlink" href="../index.html">&larr; Back to all posts</a>
+  <article class="post">
+    <h1>A Hacker Breached Nine Korean Banks With an AI Agent — Then Asked That Same AI to Write His Résumé</h1>
+    <div class="meta">October 12, 2026 · Kushagra · 8 min read</div>
+
+    <p>Every story about AI and cybercrime so far has been about capability: what can an autonomous agent break into, how fast, at what scale. The story blowing up this week is about something dumber and far more human — operational security failure. CrowdStrike published a report on October 7 showing that the attacker behind a wave of breaches at nine South Korean financial institutions didn't just use AI to hack banks. He left his entire AI conversation history sitting in an unsecured, world-readable directory on his own server — and in one of those conversations, asked Claude to turn his hacking results into a job-application résumé.</p>
+
+    <h2>What happened: ARTEX, two servers, and one careless open directory</h2>
+    <p>From late September through early October 2026, attackers breached a cluster of South Korean financial organizations, including Shinhan Bank, KB Kookmin Bank, Hana Bank, BNK Busan Bank, Yegaram Savings Bank, Hyundai Capital, and Welcome Savings Bank, plus at least two online lenders. At Shinhan, the intruder reportedly got into a loan-progress inquiry service used by financial brokers; at Kookmin, an internal employee mobile work-support system. The specific entry points were peripheral systems with weaker controls than core banking platforms — not the vault, but the side door.</p>
+    <p>CrowdStrike Intelligence traced the campaign to a two-server setup: a Hong Kong-based IP address serving as the attacker's primary infrastructure, and a second address, 38.244.50[.]120, hosting an instance of <strong>ARTEX</strong> — an open-source, LLM-driven autonomous penetration-testing tool released on GitHub by a developer known as Autumn-27 on July 26, 2026, barely weeks before the breaches began. ARTEX chains large language models into a semi-autonomous pentesting pipeline: it was configured here to run on DeepSeek v4.1-flash as its main backend, with Zhipu AI's GLM-5.3 and Grok 4.6 supplementing separate Claude Code sessions, reportedly reached through an LLM API reseller called xcai[.]pro.</p>
+    <p>None of that would have been traceable to a person if the attacker had kept his infrastructure locked down. He didn't. Both servers had open directories — publicly browsable folders with no authentication — that exposed Claude Code session histories, Claude memory files, and ARTEX configuration files in plain text. One file sat at a URL CrowdStrike published directly in its report: <code>http://38.244.50[.]120:18899/.claude/CLAUDE.md</code>, a Chinese-language system prompt instructing the model how to conduct the penetration testing.</p>
+
+    <h2>The résumé that undid him</h2>
+    <p>Here's the detail that turned a technical intrusion report into an internet-wide story: among the exposed Claude Code logs, researchers found a session where the threat actor asked Claude to write a "security researcher" résumé using bullet points drawn directly from the ARTEX campaign's results — effectively asking the AI to launder his bank-hacking spree into a job application. To do that, he fed Claude his own identifying details: the name or initials "YY," a Telegram handle (@YY520CN), an age of 26, enrollment at South China University of Technology, and a residence in Maoming, Guangdong province. The same Telegram handle turned up in unrelated sessions involving vulnerability research on a Telegram-based NFT marketplace and a separate suspected attack on a Chinese payment platform, giving CrowdStrike a thread to pull.</p>
+    <p>CrowdStrike was careful about the confidence level: it assessed with only "moderate confidence" that the campaign's operator is a Chinese-speaking, financially motivated individual, based on the Chinese-language prompts and the Chinese-origin tooling. It explicitly flagged that the résumé details — including an earlier, inconsistent 2007 birth year that surfaced elsewhere in the logs — can't be definitively tied to whoever actually ran the attacks. Attribution via leaked chat logs is suggestive, not courtroom-grade.</p>
+    <p>The attacker also used Claude for tasks with no technical purpose at all: asking where stolen Korean breach data is typically sold, and requesting help locating Korean Telegram groups that broker data sales. That's the AI not as hacking tool but as business-development assistant for cybercrime — a distinction that matters, because it shows the exposure risk extends to the entire decision chain, not just the exploit code.</p>
+
+    <h2>The political aftershock</h2>
+    <p>The story didn't stay a security-researcher curiosity. Once outlets reported the attacker might be Chinese and based in Guangdong, China's Foreign Ministry pushed back publicly. Spokesperson Mao Ning said China "has always opposed and combated hacking activities in accordance with the law" and objected to what she called "spreading false information for political purposes," while calling for international cooperation on AI-era cybersecurity rules. Separately, a person claiming to be the unmasked individual resurfaced online insisting he works at a convenience store in Henan province and has been framed — a claim impossible to verify and, given CrowdStrike's own attribution caveats, not inherently contradictory with the evidence either. South Korea's Financial Services Commission and Financial Supervisory Service issued a joint warning to consumers to watch for phishing and loan scams stemming from the leaked data.</p>
+    <p>Autumn-27, ARTEX's developer, responded to the misuse by taking the project closed-source and ending updates entirely, stating the tool "was originally designed for the purpose of learning and research" to help "enterprises and organizations conduct security risk tests within the scope of authorized assets," and that the attacks had nothing to do with the project's intent. That gesture doesn't un-release the code already circulating — copies don't vanish because a GitHub repo flips private.</p>
+
+    <h2>Why this is landing differently than the first South Korea story</h2>
+    <p>South Korean officials first raised the possibility that AI was involved in these breaches back on October 6, when President Lee Jae Myung told his cabinet AI "appears to have been used." At that point it was a plausible inference. What CrowdStrike's report adds, a day later, is forensic texture: a named tool, a named model stack, two specific IP addresses, nine proxy addresses, a Telegram handle, and the attacker's own words asking an AI to help him get a legitimate job off the back of his crimes. It moves the story from "AI-assisted crime is happening" — which the industry already knew — to "here is exactly what an AI-assisted criminal's workflow, mistakes, and digital exhaust look like when captured end to end." That's a template investigators and defenders will study for a long time, independent of whether this particular suspect is ever formally charged.</p>
+    <p>It's also a quiet rebuttal to the assumption that AI makes attackers harder to catch. In this case, the opposite happened: the same assistant the attacker leaned on for offense also became the unwitting evidence locker that exposed him, precisely because he treated it as a trusted, disposable scratchpad rather than something that would be logged, stored, and eventually left world-readable on a misconfigured server.</p>
+
+    <h2>What to watch next</h2>
+    <ul>
+      <li><strong>Formal attribution or charges</strong> — will South Korean or Chinese authorities ever name a specific individual with legal findings, rather than researcher-grade "moderate confidence," and what happens to the man publicly claiming he's been framed?</li>
+      <li><strong>Operator OPSEC norms shifting</strong> — expect other cybercrime forums to start explicitly warning members against routing identity-revealing requests through hosted AI assistants whose logs can leak.</li>
+      <li><strong>ARTEX forks</strong> — the project went closed-source, but open-source AI pentesting tools are now a known, repeatable pattern; watch for successor projects filling the gap within weeks.</li>
+      <li><strong>Scope of the breach</strong> — the full list and headcount of affected South Korean institutions and customers is still described as "unconfirmed" by multiple outlets; expect that number to grow as more banks disclose.</li>
+      <li><strong>Anthropic and other labs' response</strong> — will providers add friction or detection for prompts that combine "pentesting assistance" sessions with personal-identity requests like résumé drafting, a pattern that in hindsight looks like a usable red flag?</li>
+    </ul>
+
+    <blockquote>The AI didn't protect the attacker, and it didn't betray him either — it just did exactly what it was asked, and kept a record of all of it, because that's what these tools are built to do. The security failure was entirely his.</blockquote>
+
+    <h3 class="sources">Sources &amp; further reading</h3>
+    <ul class="sources">
+      <li>CrowdStrike — "Unknown Threat Actor Uses AI-Driven ARTEX to Target South Korean Finance" (Oct 7, 2026)</li>
+      <li>BleepingComputer — "ARTEX AI, Claude agents used in cyberattacks on South Korean banks"</li>
+      <li>The Hacker News — "ARTEX AI Pentesting Tool Used in Data Theft Attacks on South Korean Financial Firms"</li>
+      <li>Reuters / Economic Times — "Suspect behind South Korea bank hacks may be 26-year-old in China, CrowdStrike says"</li>
+      <li>Security Affairs — "AI-Driven tool ARTEX used in attacks against South Korean Banks"</li>
+      <li>CyberSecurityNews — "Solo Hacker Used AI Tools to Breach South Korean Financial Organizations and Steal Data"</li>
+      <li>WCCFTech — coverage of China's Foreign Ministry response and the suspect's framing claim</li>
+      <li>South Korea Financial Services Commission / Financial Supervisory Service — consumer warning notices</li>
+    </ul>
+  </article>
+</main>
+<footer>
+  Signal/Noise · Built by Kushagra
+</footer>
+</body>
+</html>
