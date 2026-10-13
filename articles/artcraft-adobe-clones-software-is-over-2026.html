@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>"Software Is Over": One Developer Used AI to Clone Adobe's Entire Suite — Signal/Noise</title>
+<meta name="description" content="Brandon Thomas used Claude Opus 5.5 to reverse-engineer seven Adobe apps into free, open-source Rust clones in a weekend. Why it's the story Hacker News can't stop arguing about.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav><a href="../index.html">Home</a></nav>
+</header>
+<main>
+  <a class="backlink" href="../index.html">&larr; Back to all posts</a>
+  <article class="post">
+    <h1>"Software Is Over": One Developer Used AI to Clone Adobe's Entire Creative Suite in a Weekend</h1>
+    <div class="meta">October 13, 2026 · Kushagra · 8 min read</div>
+
+    <p>Every year someone declares that AI is about to "disrupt" the software industry. This week, for once, somebody actually shipped the receipt. Over the weekend of October 4–5, a Rust developer named <strong>Brandon Thomas</strong> took his AI-image-editing startup ArtCraft and pivoted it into seven free, open-source applications that recreate the interface and core functionality of Adobe's entire Creative Cloud lineup — Photoshop, Illustrator, Premiere, Lightroom, After Effects, InDesign, and Acrobat Pro. He announced it on Reddit, it hit the front page of Hacker News within hours, and by the time Ars Technica, TechSpot, Gizmodo, and a dozen other outlets had covered it, Thomas's one-liner — "software is over" — had become the week's most argued-about sentence in tech.</p>
+
+    <h2>What actually shipped</h2>
+    <p>The seven apps, built under the ArtCraft brand, map one-to-one onto Adobe's lineup: <strong>PhotoCraft</strong> (Photoshop), <strong>VectorCraft</strong> (Illustrator), <strong>FilmCraft</strong> (Premiere), <strong>LightCraft</strong> (Lightroom), <strong>EffectCraft</strong> (After Effects), <strong>DesignCraft</strong> (InDesign), and <strong>PrintCraft</strong> (Acrobat Pro). They're written in Rust, run natively on Windows, Linux, and macOS, ship WebAssembly builds for in-browser use, and are released under MIT and Apache 2.0 licenses — free, no subscription, no account, files processed locally. According to coverage from martincid.com, the apps are also designed to be driven from the command line via JSON and over MCP, the same protocol AI agents use to operate other software — a detail that signals who Thomas actually expects to be the primary "user" of these tools going forward.</p>
+    <p>Thomas, who says he has roughly a decade of large-scale Rust experience and has coded exclusively with AI tools since February, told Reddit he built the clones using Anthropic's <strong>Claude Opus 5.5</strong>, describing them as "clean-room replacements" — recreated from observed behavior and public documentation rather than decompiled source code. The repositories picked up thousands of GitHub stars within hours of the Hacker News post, according to a Medium writeup by Cagri Sarigoz.</p>
+
+    <h2>The line that set it off</h2>
+    <p>Thomas wasn't shy about the framing. "Now you can just create 1:1 functional equivalents, clean room, that are highly performant and cross-platform. Nothing is stopping you," he wrote, per Ars Technica and TechSpot. "We'll replace Google Search, we'll build our own smartphones, we'll build better infra. We'll remove all the ads and de-enshittify the entire tech world." In an earlier comment he went further: "Software is over," he said, claiming he had "one-shotted Photoshop. The whole thing."</p>
+    <p>Reaction split along predictable lines. Open-source advocate Eric S. Raymond posted, as quoted by WebProNews, "Adobe just got nuked. And closed source is dead, dead, dead." Early tester James O'Malley described PhotoCraft as feeling "eerily familiar," writing: "I know it's literally a recreation of Photoshop but it is... just... Photoshop. My jaw is on the floor." A Gizmodo reviewer who actually used it was more measured, calling the experience "glitchy, but real, Photoshop" — usable for casual edits, not yet for professional work.</p>
+    <p>Thomas himself walked back the hype almost immediately once Hacker News commenters started listing gaps. His initial Reddit promise of "100% feature parity within a month" became, days later on HN: "99% parity will take a while, but I'm sure it's measured in months and not years."</p>
+
+    <h2>Why Adobe is a uniquely exposed target</h2>
+    <p>The timing isn't incidental. In March 2026, Adobe agreed to pay $150 million to settle a Department of Justice lawsuit — filed after an FTC investigation under the Restore Online Shoppers' Confidence Act — alleging the company buried early-termination fees and made Creative Cloud subscriptions deliberately hard to cancel. Thomas has cited exactly this pain point as his motivation, telling Hacker News he was "bit by the dark pattern 'cancellation fee' one too many times." For a user base that already resents Adobe's business model, a free alternative doesn't need to be as good as the original — it needs to be good enough, and righteously motivated.</p>
+    <p>That's also precisely why this story is different from the usual "AI wrote an app" novelty. It isn't about whether a chatbot can write code — that's been settled for a while. It's about reverse engineering a decade of proprietary, deeply entrenched professional software and getting from zero to a plausible clone of seven applications in a single weekend, something that historically took open-source teams (GIMP, Inkscape, Kdenlive) years and never fully closed the gap on.</p>
+
+    <h2>The legal question nobody's answered yet</h2>
+    <p>Reverse-engineering a product's functionality without copying its underlying code has generally held up legally — that's the whole premise behind decades of clean-room reimplementation, from BIOS clones to Wine. But as Ars Technica and tbreak.com both note, copying an interface's look and feel too closely can trigger trade-dress claims, a separate legal theory that protects visual identity rather than code. Commentators have started drawing comparisons to Napster's disruption of the music industry — not because the legal theory is identical, but because of the shape of the conflict: a well-funded incumbent, a scrappy challenger claiming the moral high ground, and a technology that makes the old enforcement playbook harder to execute. Adobe has not commented publicly on ArtCraft in any of the coverage so far.</p>
+    <p>Funding is its own open question. Thomas says ArtCraft's clone suite won't become an "orphaned small-team project" because it's subsidized by selling token-based access to ArtCraft's underlying AI image/video generation model, offered inside the apps as one option among several third-party models — meaning the free Adobe-killer's business model is, somewhat ironically, paid AI compute.</p>
+
+    <h2>Why this is landing differently than past "Photoshop killer" attempts</h2>
+    <p>Open-source Adobe alternatives aren't new — GIMP has existed since 1996, Inkscape since 2003, DaVinci Resolve has eaten into Premiere's market for years. What makes ArtCraft a bigger story than any of those is velocity: one developer, one weekend, one model, seven applications that at least superficially mimic Adobe's actual interfaces rather than inventing new ones. If Thomas's "months not years" timeline to near-parity holds up even loosely, it reframes a question the whole software industry has been dancing around since AI coding tools got genuinely capable this year: how much of the enterprise software moat was ever the code, versus the interface, the file-format lock-in, and the subscription habit? ArtCraft is a live experiment in stripping two of those three away at once.</p>
+
+    <h2>What to watch next</h2>
+    <ul>
+      <li><strong>Adobe's response</strong> — silence so far, but a cease-and-desist, a trade-dress suit, or a conspicuous non-reaction would each send a very different signal about how worried the company actually is.</li>
+      <li><strong>Whether "99% parity" is real or marketing</strong> — PhotoCraft handling a production-grade layered PSD, or FilmCraft cutting a real multi-track timeline, would be the actual proof point; glitchy demos are not.</li>
+      <li><strong>Copycat attempts</strong> — Thomas explicitly invited others to do the same thing to Google Search, smartphones, and other closed platforms; watch for whether this becomes a pattern rather than a one-off.</li>
+      <li><strong>File-format and plugin compatibility</strong> — the professional moat for Creative Cloud isn't just the editor, it's decades of PSD/AI/Premiere project files, plugins, and studio pipelines built around Adobe's formats specifically.</li>
+      <li><strong>MCP-driven usage</strong> — reports that the apps are built to be operated by AI agents via MCP and JSON suggest the real target audience may not be human Photoshop users at all, but autonomous agents doing creative work on someone's behalf.</li>
+    </ul>
+
+    <blockquote>The clones are "super early alpha" by Thomas's own admission. What's not alpha is the demonstration that a single developer, using a frontier AI model, can now credibly threaten to unbundle a company's entire product line in a weekend — and that the barrier left standing is mostly legal, not technical.</blockquote>
+
+    <h3 class="sources">Sources &amp; further reading</h3>
+    <ul class="sources">
+      <li>Ars Technica — "'Software is over': Bold AI developer takes aim at Adobe with open source clones" (Oct 2026)</li>
+      <li>TechSpot — "'Software is over': Developer uses AI to build free Adobe clones after frustration with cancellation fees"</li>
+      <li>TweakTown — "Developer says 'software is over' after using AI to recreate Adobe's entire Creative Cloud suite for free"</li>
+      <li>WebProNews — "One Developer, One AI Model: The Open-Source Assault on Adobe's Creative Empire"</li>
+      <li>martincid.com — "Adobe's Cancellation Fee Is Now the Pitch for Free AI Photoshop Clones"</li>
+      <li>tbreak.com — "Free Open Source Adobe Alternatives Built With AI"</li>
+      <li>Cagri Sarigoz (Medium) — "One dev rebuilt Adobe's full suite in a weekend using AI agents"</li>
+      <li>Gizmodo — hands-on review of PhotoCraft (Oct 8, 2026)</li>
+      <li>Hacker News discussion threads on the ArtCraft launch</li>
+      <li>TechSpot — background on the DOJ/FTC $150M Adobe settlement over cancellation fees (June 2024 suit, March 2026 settlement)</li>
+    </ul>
+  </article>
+</main>
+<footer>
+  Signal/Noise · Built by Kushagra
+</footer>
+</body>
+</html>
