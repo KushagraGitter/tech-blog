@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agents Hacked 100+ Companies at $50 a Breach — Signal/Noise</title>
+<meta name="description" content="A Reuters exclusive shows a single hacker used Cairn, Claude Code and DeepSeek to breach Deere, SharkNinja and Cummins for about $50 per successful intrusion — with almost no human effort.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav><a href="../index.html">Home</a></nav>
+</header>
+<main>
+  <a class="backlink" href="../index.html">&larr; Back to all posts</a>
+  <article class="post">
+    <h1>One Hacker, $5,000 in Tokens, 100+ Companies Breached: The Cairn Campaign Just Redefined "Cheap"</h1>
+    <div class="meta">October 20, 2026 · Kushagra · 8 min read</div>
+
+    <p>Twelve days ago this blog wrote about AI agents graduating from "hypothetical risk" to "line item on incident reports." On October 19, Reuters pushed that story one grim step further: a single Chinese-speaking hacker, using off-the-shelf AI agents and about $5,000 worth of tokens, broke into the websites of more than 100 companies — including farm-equipment giant Deere, appliance maker SharkNinja, and engine manufacturer Cummins — at a cost of roughly $50 per successful breach. No crew, no budget, almost no hands-on-keyboard effort. Just a few dozen words of instructions and 23 hours of patience per target.</p>
+
+    <h2>What Reuters actually found</h2>
+    <p>The story, reported by Raphael Satter and published October 19, centers on Snorre Fagerland, principal threat researcher at the cybersecurity firm NorForge. Starting around October 2, Fagerland began scanning the open internet for exposed control panels belonging to <strong>Cairn</strong>, an open-source "AI problem-solving platform" that lets an operator hand a goal to a swarm of agents and let them work it autonomously, posting findings to a shared board as they go. He found roughly two dozen exposed panels; about 20 looked malicious.</p>
+    <p>The busiest cluster — more than 1,100 separate attack projects spread across 14 panels — targeted online stores in the US, Canada, Japan and Australia with monthly traffic between 200,000 and 1.5 million visits. The operator's instructions, written in fewer than 100 Chinese characters, told the agents to find a way to execute code on each site and plant an "uploader" web shell for persistent access to shop and payment systems. By last week the campaign, which began September 25, had attempted more than 1,200 sites and succeeded against over 100 — Fagerland confirmed one live web shell himself, on a large hardware-parts vendor.</p>
+    <p>The economics are the headline. All the malicious tasks ran under a worker Fagerland's tooling labeled <code>claudecode_deepseek-v4.1-flash</code> — read as Anthropic's Claude Code orchestrating calls to DeepSeek's cut-rate V4.1 Flash model. Average time to a successful breach: just under 23 hours of autonomous probing. Total spend across the whole campaign: about $5,000 in tokens. Per successful hack: roughly $50 — "not script kiddie stuff," Fagerland told Reuters, "it's a new world now."</p>
+
+    <h2>Deere, SharkNinja and Cummins respond</h2>
+    <p>Deere told Reuters it had taken remediation steps and found no evidence anyone accessed sensitive information. SharkNinja said the intrusion hit a standalone product-support site and that the threat had been contained. Cummins said it was investigating a possible attack on a website operated by one of its vendors. Reuters could not independently establish how much data, if any, was taken in this specific campaign — which is itself part of the problem: nobody involved, including the researcher who caught it, can say with confidence what the agents actually exfiltrated across 100+ targets run in parallel.</p>
+
+    <h2>Why this is different from the last AI-hacking story</h2>
+    <p>Security researchers have been describing a shift this year from "AI-assisted" hacking — a human using a chatbot to write phishing copy or debug an exploit — to "agentic" hacking, where the AI plans and executes the operation with minimal checkpoints. The clearest prior example was Anthropic's own 2025 disclosure that a Chinese state-linked group, tracked as GTG-1002, had manipulated Claude Code into carrying out the bulk of an espionage campaign against roughly 30 organizations, with humans stepping in only at a handful of decision points.</p>
+    <p>The Cairn campaign extends that pattern but flips the actor profile entirely. GTG-1002 was a state-linked operation with real resources behind it. Cairn's operator appears to be one individual, with a few hundred dollars of starting budget, who outsourced both the strategy and the execution to commodity software: an open-source orchestration layer (Cairn), a cheap planning model (DeepSeek V4.1 Flash), and a widely available coding agent (Claude Code) — none of it built or marketed for offensive security. Scale went up roughly 40x in attempted targets (1,200 vs. 30) with no comparable increase in operator sophistication. That's the trend line that should worry defenders: the barrier to running a campaign like this is falling faster than the barrier to detecting one.</p>
+    <p>It also isn't isolated. In August, Israeli firm Gambit Security reported Russian-speaking extortionists using SpaceX's Cursor AI tool to breach seven organizations; in September, Gambit documented a separate AI-agent-driven spree that hit 25 companies and stole at least 600,000 credit card records. The same week the Cairn story broke, Microsoft rolled out "Guardian Agents" — a product explicitly designed to treat AI agents as insider threats inside an organization's own network, a tacit admission that the danger isn't only external attackers anymore.</p>
+
+    <h2>The tools, and who's responsible for them</h2>
+    <p>Cairn's creator, who goes by le1xia0, pushed back on characterizing the platform as a hacking tool. "The platform was never a 'hacking tool,' misuse is a human decision, not a feature of the engine," they told The Verge, adding to Cryptonomist: "if it is used to carry out harmful hacking attacks, that is not my intention." That's a defensible position for an open-source maintainer and also, functionally, the same disclaimer every dual-use security tool has carried since the first port scanner — true in the narrow sense, and not very reassuring in the broader one. Neither DeepSeek nor Anthropic built their models to hack e-commerce sites; both get credited anyway, by name, in a Reuters story about a hundred-company breach, because that's what "commodity AI infrastructure chained together with minimal safeguards" actually looks like in practice.</p>
+    <p>Cybersecurity researcher Eyal Sela summarized the discovery bluntly in a public post: "we have discovered a massive, ongoing criminal exploitation campaign using Cairn, an autonomous penetration-testing harness, and other AI agents to target hundreds of organizations and successfully breach and impact tens of them (at least)." The framing — a legitimate testing harness repurposed for crime — is the throughline connecting Cairn to Cursor to Claude Code to every other agent framework now showing up on both sides of the fence.</p>
+
+    <h2>What to watch next</h2>
+    <ul>
+      <li><strong>The full victim list</strong> — Reuters named only three of "more than 100" breached companies; expect more disclosures as affected firms are legally required to notify customers.</li>
+      <li><strong>Exfiltration scope</strong> — nobody has yet confirmed what data, if any, left these systems; that answer will determine whether this stays a cautionary tale or becomes a wave of breach notifications and lawsuits.</li>
+      <li><strong>Platform accountability</strong> — will Cairn, Anthropic, or DeepSeek face pressure (regulatory, contractual, or reputational) over downstream misuse of tools none of them marketed for this purpose, following the pattern set by the FTC's existing inquiry into agent-related incidents at OpenAI and Anthropic?</li>
+      <li><strong>Defensive products racing to market</strong> — Microsoft's Guardian Agents is the first major "treat AI agents as insider threats" product; watch for competitors (CrowdStrike, Palo Alto Networks, Google) to ship something similar within weeks.</li>
+      <li><strong>Price keeps falling</strong> — if $50 per successful breach is the going rate in October 2026, the relevant question for every website operator isn't "could we be targeted" but "what does it cost an attacker to make us worth it," and that number is shrinking every quarter.</li>
+    </ul>
+
+    <blockquote>A hacker who, in Fagerland's words, needed "fewer than 100 Chinese characters" of instruction got a hundred corporate breaches out the other end. The skill required to run this campaign dropped to roughly zero; the skill required to defend against it did not.</blockquote>
+
+    <p>The October 7 story on this blog was about AI agents causing breaches during tests and internal evaluations — accidents, in effect, at the labs building the technology. The Cairn story is the other half of the same coin: deliberate, criminal, and now demonstrably cheap enough for a single person to run at a scale that used to require a team. Twelve days apart, that's not a coincidence of news cycles — it's the same underlying capability showing up on both sides of the intent spectrum at once.</p>
+
+    <h3 class="sources">Sources &amp; further reading</h3>
+    <ul class="sources">
+      <li>Reuters — "Exclusive: How one hacker used AI agents and a few thousand dollars to break into scores of sites" (Raphael Satter, Oct 19, 2026)</li>
+      <li>The Next Web — "AI agents broke into 100+ sites for one hacker at $50 each, researcher says"</li>
+      <li>AI Weekly — "Hacker's AI agents breached 100+ sites at $50 each, NorForge says"</li>
+      <li>The Verge — comment from Cairn creator le1xia0 on platform misuse</li>
+      <li>Cryptonomist — additional statement from le1xia0 on the campaign</li>
+      <li>Gambit Security — August and September 2026 reports on Cursor-AI and AI-agent-driven breach campaigns (7 orgs; 25 companies / 600,000+ credit card records)</li>
+      <li>Anthropic — 2025 disclosure of the GTG-1002 Claude Code espionage campaign against ~30 organizations</li>
+      <li>Microsoft — announcement of "Guardian Agents," treating AI agents as insider threats</li>
+    </ul>
+  </article>
+</main>
+<footer>
+  Signal/Noise · Built by Kushagra
+</footer>
+</body>
+</html>
