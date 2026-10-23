@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GhostShares: How Meta's "Privacy-First" AI Agent Leaked Loan Applications and Bank Fraud Alerts — Signal/Noise</title>
+<meta name="description" content="Security firm Claroc found 6,800 Meta Muse conversation links sitting in public DNS records — no login, no hacking, just one search. Here's how, and why it's the week's biggest tech story.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav><a href="../index.html">Home</a></nav>
+</header>
+<main>
+  <a class="backlink" href="../index.html">&larr; Back to all posts</a>
+  <article class="post">
+    <h1>GhostShares: How Meta's "Privacy-First" AI Agent Leaked Loan Applications and Bank Fraud Alerts to Anyone Who Looked</h1>
+    <div class="meta">October 23, 2026 · Kushagra · 7 min read</div>
+
+    <p>It took one query. Not a zero-day, not stolen credentials, not even a login — just a single search against public DNS records. That's all security firm Claroc needed to surface 6,800 private conversations that users of Meta's AI agent Muse believed they had shared with exactly one other person. Among them: a candidate's notes for a confidential executive-search call with a frontier AI lab, a small-business loan application with the exact amount requested, a to-do list containing a bank fraud alert with a partial account number, and a workplace's full-year vacation calendar naming dozens of employees. The story broke Monday via Ars Technica and spread within hours to Hacker News' front page, where it currently sits as the top-discussed tech story of the week — a brutal irony given that Mark Zuckerberg described Muse just last month as "built from the ground up for privacy and security."</p>
+
+    <h2>The design flaw, in plain terms</h2>
+    <p>Muse lets users share conversations, searches, and generated content via a link — standard behavior for any AI assistant. The security model for that kind of sharing almost always relies on obscurity: the URL contains a long, unguessable string of characters, so even though the page itself has no password, nobody can find it without being handed the exact link.</p>
+    <p>Muse's share links live under the domain <code>cf.metaaiusercontent.com</code>, and critically, Meta's engineers built each link by combining the conversation's own title with a random ID — and put that title directly in the subdomain rather than the URL path. Examples cited by Claroc: <code>home-sale-budget-9f21c8a3.cf.metaaiusercontent.com</code>, <code>q3-revenue-review-7b1e42f0.cf.metaaiusercontent.com</code>, <code>loan-application-draft-a4c9e2.cf.metaaiusercontent.com</code>. Because the descriptive title sits in the hostname, every time someone opens a shared link, their browser's DNS lookup for that exact subdomain gets recorded by passive-DNS providers — commercial services that log historical domain resolutions for security and threat-intelligence purposes. Claroc simply queried one of those providers, searched for anything under the Muse domain, and the titles did the rest of the work; no brute-forcing or random-ID guessing required. The firm also found that urlscan.io, a separate free URL-scanning tool, already held more than 75 cached snapshots of Muse share pages sitting in public view.</p>
+    <p>Claroc is calling the bug class "GhostShares" — pages that open for people who were never handed the link, discoverable by anyone willing to search. Asaf Aprozper, the firm's co-founder and CTO, reported the issue through Meta's bug bounty program on October 8. Running the search about a month after Muse's September 8 launch, and after filtering scan noise, Claroc counted more than 6,800 distinct share hostnames — then opened a few hundred to check what was actually inside. Most were harmless. A meaningful minority weren't.</p>
+
+    <h2>Why it's blowing up right now</h2>
+    <p>Three things are compounding to make this the week's defining tech story rather than a routine disclosure. First, timing: Muse is Meta's fastest-growing consumer AI product yet, reportedly crossing 5 million downloads within 22 days of its U.S. launch — faster than ChatGPT, Grok, or Claude reached the same mark, according to Sensor Tower. A privacy failure at that scale and that velocity hits a lot of people at once. Second, Meta's own marketing set up the contrast: Zuckerberg's "built from the ground up for privacy and security" line is now being quoted back at the company in nearly every piece of coverage. Third, this is not Muse's first security story this month. Researcher Patrick Wardle disclosed on September 21 a Mac-side flaw letting malware already running on a user's machine hijack Muse's dictation pipeline and steal account tokens — tokens that, because Muse syncs across devices, could then be used to make the assistant report a phone's exact location or scan nearby Bluetooth devices from anywhere. Separately, Inc. columnist Jason Aten reported in late September that Muse appeared to have read his private Messages content without the explicit permission toggle he believed he'd left off; Meta VP of Communications Andy Stone and Meta Superintelligence Labs' David Singleton both disputed the account, insisting the behavior requires three explicit, hard-to-trigger-by-accident permission steps. Stack those three stories inside one month and you get a pattern Hacker News commenters have been quick to name: a product marketed on trust, repeatedly caught short on the fundamentals.</p>
+
+    <h2>What Meta has said and done</h2>
+    <p>In a statement emailed to Ars Technica after the GhostShares report, Meta said: "We opened the Muse bug bounty program so researchers could raise different scenarios and help us continue improving the product. People have the ability to share specific Muse artifacts, which creates a page that can be accessed by those with the link. However, we've paused this functionality while we review this report and consider changes to how these links can be discovered." That pause took effect within hours of the research going public — the sharing feature is currently disabled network-wide while Meta reconsiders how URLs get constructed. Notably, Meta's response does not dispute Claroc's findings or characterize the underlying link-sharing mechanism itself as unintended; multiple outlets reported Meta had initially treated the discoverability as "by design" before the broader backlash, since the privacy failure lies specifically in title-in-hostname construction, not in the concept of link-based sharing.</p>
+
+    <h2>The bigger pattern this fits into</h2>
+    <p>This is at least the second major "AI agent given broad real-world access, guardrails discovered insufficient after the fact" story this month alone, following the ARTEX-linked South Korean bank breaches and the string of agent-related incidents at OpenAI and Google covered elsewhere on this blog. What makes GhostShares distinct is that it's not an attacker exploiting an agent's autonomy — it's a basic web-engineering mistake, the kind security teams have warned about for over a decade (descriptive, secret-bearing strings should never end up in anything DNS-resolvable or cacheable), shipped inside a product explicitly pitched on privacy credentials. It's a reminder that as AI assistants absorb more of users' financial, medical, and professional lives by design, the attack surface isn't limited to the model's reasoning — it's also every mundane piece of plumbing around it: how a URL gets built, where a title string ends up, what a CDN logs by default.</p>
+
+    <h2>What to watch next</h2>
+    <ul>
+      <li><strong>Whether Meta re-enables sharing with a fixed link scheme</strong> — the obvious fix (random IDs with no descriptive text, served from a path rather than a resolvable subdomain) is well understood; the question is how long the feature stays dark and whether Meta discloses a technical root-cause writeup.</li>
+      <li><strong>Whether other AI assistants share Muse's mistake</strong> — Claroc noted plainly that "plenty of AI assistants share by public link"; expect researchers to run the same passive-DNS technique against ChatGPT, Gemini, Grok, and Claude's own sharing features in the coming days.</li>
+      <li><strong>Regulatory attention</strong> — Meta is already facing a record-setting $25 billion fine from New Mexico over unrelated child-safety allegations and fresh scrutiny from the Cambridge Analytica aftermath; a second consumer-data exposure story inside the same news cycle raises the odds this becomes part of a broader FTC or state AG inquiry rather than a one-off bug writeup.</li>
+      <li><strong>How many of the 6,800 exposed links get retroactively scrubbed</strong> — passive DNS and urlscan.io caches don't disappear just because Meta disables new sharing; previously indexed pages may remain discoverable unless Meta actively purges or expires them.</li>
+    </ul>
+
+    <blockquote>The through-line is familiar by now: an AI product is marketed on the promise that it was built carefully around privacy and security, and the actual failure turns out to be an unglamorous, decades-old web mistake — a secret sitting somewhere it should never have been logged.</blockquote>
+
+    <p>Six months ago, a story like this might have been a niche security-blog footnote. In October 2026, with AI agents racing to absorb emails, bank logins, calendars, and messages on the promise of doing it safely, "it took one query" is exactly the kind of sentence that turns a bug report into the most-discussed tech story of the week.</p>
+
+    <h3 class="sources">Sources &amp; further reading</h3>
+    <ul class="sources">
+      <li>Ars Technica — "Meta Muse exposes users' personal and business secrets when they share conversations" (Oct 20, 2026)</li>
+      <li>Claroc (blog.claroc.io) — "GhostShares: Muse Passive DNS" research disclosure</li>
+      <li>Qz.com — "Researchers found 6,800 shared Meta Muse conversation links through public DNS records"</li>
+      <li>The Hacker News (thehackernews.com) — "One Hidden Meta Muse Setting Could Let Attackers Turn the AI Assistant Into a Backdoor" (Patrick Wardle research, Sept 21, 2026)</li>
+      <li>TechCrunch — "Meta disputes claim that Muse read a user's private messages without permission" (Jason Aten report, Andy Stone and David Singleton responses)</li>
+      <li>Ars Technica — "Muse, Meta's extraordinarily privileged AI assistant, has a serious 0-day" (Sept 2026, background context)</li>
+      <li>Sensor Tower — download-velocity data cited for Muse's 5 million downloads in 22 days</li>
+    </ul>
+  </article>
+</main>
+<footer>
+  Signal/Noise · Built by Kushagra
+</footer>
+</body>
+</html>
