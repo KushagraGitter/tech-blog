@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binance Loses $6.3 Billion in History's Largest Crypto Heist — Signal/Noise</title>
+<meta name="description" content="North Korea's TraderTraitor unit allegedly drained $6.36 billion from Binance in 20 minutes — four times the Bybit record — via a compromised DevOps laptop and an EIP-7702 wallet-delegation trick.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav><a href="../index.html">Home</a></nav>
+</header>
+<main>
+  <a class="backlink" href="../index.html">&larr; Back to all posts</a>
+  <article class="post">
+    <h1>Binance Just Lost $6.3 Billion in 20 Minutes — the Largest Crypto Heist in History</h1>
+    <div class="meta">October 31, 2026 · Kushagra · 8 min read</div>
+
+    <p>At 20:05 UTC on October 29, 2026, someone started draining Binance. By 20:25, roughly $6.36 billion in crypto had moved out of the world's largest exchange across ten different blockchains. That's not a typo, and it's not a slow-bleed breach discovered weeks later — it's four times the size of the previous record, the $1.5 billion Bybit hack from February 2025, executed in less time than it takes to watch a sitcom episode. Within 48 hours it had become the single biggest story in tech: crypto Twitter, Hacker News, and every major wire service were running the same headline, because for an industry that loves to say "not your keys, not your coins," the keys apparently weren't the problem this time.</p>
+
+    <h2>What actually happened</h2>
+    <p>Binance co-CEO Richard Teng confirmed the broad shape of the attack in a statement posted to X and LinkedIn: the company's initial investigation pointed to a compromised DevOps engineer's laptop, which gave an attacker access to a service container. From there, the attacker submitted unauthorized withdrawal transactions. Teng was careful to add nuance that matters: "the attacker did not simply use one engineer's permissions, and this was not a single 'one-click' action. It involved a more complex attack process." Binance later said its "subsequent investigation has uncovered additional points of breach" — suggesting the single-laptop story was the opening act, not the whole script.</p>
+    <p>Blockchain analysis firm TRM Labs, which tracked the transfers in real time, described the technical mechanism on Ethereum: the attackers exploited EIP-7702, a feature that lets a standard wallet delegate its behavior to a smart contract via a signed permission. According to security firm SecurityWeek's reporting on TRM's findings, the attackers sent a batch of 50 pre-signed permissions from a Binance hot wallet, timed so that one would match the wallet's transaction nonce at the exact moment of execution — effectively a loaded trap waiting for the right instant to fire. TRM separately said it's likely the attackers gained access to Binance's hot-wallet signing system itself, turning an internet-connected wallet into one that moved funds automatically to attacker-controlled addresses, mirroring the Bybit playbook almost exactly.</p>
+    <p>Binance suspended deposits and withdrawals within hours, revoked the compromised address authorizations, and said flatly it would "cover all losses" — both from its Secure Asset Fund for Users (SAFU), a Bitcoin-denominated insurance pool set up in 2018, and from company funds. The catch, flagged by Al Jazeera: the stolen sum is more than six times the size of SAFU itself, meaning Binance is effectively self-funding a bailout many multiples larger than its dedicated emergency reserve.</p>
+
+    <h2>Who did it — and why everyone agrees so fast</h2>
+    <p>Two independent blockchain intelligence firms, TRM Labs and Chainalysis, reached the same conclusion within a day: TraderTraitor, a North Korean state-backed unit also tracked under the umbrella names Lazarus Group and APT38. TRM said it made the call "with high confidence," citing both on-chain and off-chain intelligence, and pointed to shared fingerprints with two earlier heists — the Bybit hack and the $290 million KelpDAO theft from April 2026 — including a mixer-funded operator wallet, preparation done long before any funds moved, and signatures collected in advance and fired in a single burst. Chainalysis CEO Jonathan Levin cited an additional thread: investigators found proceeds from last month's Bitget exploit mixed with funds taken from Binance, tying the operations together. Independent blockchain investigator ZachXBT also named Lazarus as the likely actor. The U.S. Cybersecurity and Infrastructure Security Agency had already flagged TraderTraitor back in 2022 as a group that would "likely continue exploiting vulnerabilities of cryptocurrency technology firms... to generate and launder funds to support the North Korean regime" — this heist reads like a direct continuation of that warning, just at a much larger scale.</p>
+    <p>The recovery effort moved almost as fast as the theft. Stablecoin issuers Tether, Circle, Ripple, and World Liberty Financial froze roughly $2.67 billion between them, and Arbitrum's Security Council froze 8,426 ETH and 74.6 million ARB on its own network — pushing total frozen funds to around $2.7–3 billion, depending on which snapshot you read. By Friday, a Binance spokesperson told reporters that about 80% of the stolen assets had been secured in some form, leaving roughly $1.2–3.3 billion still unaccounted for, depending on the measure used — reporting on the exact remaining figure varied as the freeze count kept climbing hour by hour.</p>
+
+    <h2>Why this lands differently than past crypto hacks</h2>
+    <p>Crypto has absorbed billion-dollar thefts before without fundamentally changing anything — the market shrugged off Bybit's $1.5 billion loss in 2025 within weeks. What's different this time is the target. Binance isn't a mid-tier platform; it is the reference exchange, the one every retail investor and institutional desk assumes is "too big and too careful" to get hit this hard. A breach that starts with one employee's laptop and ends with $6.3 billion gone in 20 minutes is a direct hit on the industry's core pitch: that centralized exchanges, for all their custodial risk, at least have enterprise-grade security operations. Check Point's chief information security officer Jayant Dave called it plainly "the largest crypto theft on record" — not just in dollar terms, but in what it implies about defense-in-depth at the very top of the exchange hierarchy.</p>
+    <p>There's also a human-engineering angle that security researchers keep returning to. Lazarus/TraderTraitor is well known for operations like "DreamJob" and "Contagious Interview," in which operatives pose as recruiters or technical interviewers, lure engineers at crypto firms with fake job offers, and get them to run malware-laced "coding tests" or "interview assignments" on their work machines. Whether or not that specific vector was used here, it's the textbook method this group uses to get exactly the kind of initial foothold Binance described — one compromised engineer laptop, turned into a path to a service container, turned into a signing system.</p>
+
+    <h2>What to watch next</h2>
+    <ul>
+      <li><strong>The technical post-mortem</strong> — Binance promised a detailed write-up once its investigation concludes; the "additional points of breach" comment suggests the single-laptop narrative will get more complicated, not less.</li>
+      <li><strong>How much of the remaining balance gets frozen</strong> — stablecoin issuers can freeze their own tokens on command, but native assets like Bitcoin and Ethereum can't be clawed back the same way once they're moved off exchanges the attackers control.</li>
+      <li><strong>Regulatory fallout</strong> — expect exchanges, custodians, and regulators worldwide to scrutinize hot-wallet signing architecture and EIP-7702-style delegation mechanisms specifically, given how directly they were weaponized here.</li>
+      <li><strong>Whether SAFU-style insurance funds get rebuilt bigger</strong> — a reserve that's 1/6th the size of a single incident's losses is not going to survive this news cycle unchanged.</li>
+      <li><strong>North Korea's laundering pipeline</strong> — CISA's own history with TraderTraitor shows funds get converted and dispersed fast; tracking where the unfrozen ~$1–3 billion ends up will be the real multi-month story here, not the initial breach.</li>
+    </ul>
+
+    <blockquote>Binance didn't lose $6.3 billion to a sophisticated zero-day in its blockchain. It lost it to one engineer's laptop, a wallet-delegation feature most users have never heard of, and a state actor that has now run this exact playbook three times in two years.</blockquote>
+
+    <p>The amount makes headlines, but the mechanism is the real story: the weakest link in a multi-billion-dollar financial system was, once again, a single employee's device — and the strongest technical safeguard in Web3, the self-custody promise, had nothing to say about an attack that happened entirely on the custodian's side of the ledger.</p>
+
+    <h3 class="sources">Sources &amp; further reading</h3>
+    <ul class="sources">
+      <li>BleepingComputer — "Binance links $6.3 billion crypto theft to compromised DevOps laptop"</li>
+      <li>Al Jazeera — "Binance says $6.3bn stolen in biggest crypto heist in history: What we know"</li>
+      <li>BBC News — "Crypto giant Binance hit by hack suspected to be largest in history" and "Why North Korea's 'elite' hackers are the prime suspect in major Binance hack"</li>
+      <li>SecurityWeek — "$6 Billion Binance Hack Bears Hallmarks of North Korea's TraderTraitor"</li>
+      <li>TechRadar Pro — "Binance hit by 'largest crypto theft on record' as North Korean hackers steal $6.3bn in just 20 minutes"</li>
+      <li>ABC News (Australia) — "Analysts suspect North Korean's TraderTraitor unit behind Binance hack"</li>
+      <li>FinTech Magazine — "The Binance Hack: What Experts Say About the US$6.3bn Loss" (full Richard Teng statement)</li>
+      <li>TRM Labs — "North Korea Steals USD 6.36 Billion From Binance in the Largest Hack in History"</li>
+      <li>TechSpot — "Binance loses $6.3 billion in largest crypto heist ever"</li>
+    </ul>
+  </article>
+</main>
+<footer>
+  Signal/Noise · Built by Kushagra
+</footer>
+</body>
+</html>
