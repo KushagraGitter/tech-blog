@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Backdoored Claude Code Extension Sat on Cursor's Marketplace for 11 Hours — Signal/Noise</title>
+<meta name="description" content="How a trojanized build of Anthropic's official Claude Code extension landed on Cursor's marketplace, planted SSH backdoors on up to 5,000 developer machines, and what it reveals about IDE supply-chain risk.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site">
+  <a class="logo" href="../index.html">Signal<span>/</span>Noise</a>
+  <nav><a href="../index.html">Home</a></nav>
+</header>
+<main>
+  <a class="backlink" href="../index.html">&larr; Back to all posts</a>
+  <article class="post">
+    <h1>A Backdoored Claude Code Extension Sat on Cursor's Marketplace for 11 Hours — and Nobody Had to Click Anything</h1>
+    <div class="meta">November 1, 2026 · Kushagra · 8 min read</div>
+
+    <p>Sitting atop Hacker News this weekend isn't a model release or a benchmark score — it's a forensic write-up titled "Official Claude Code Extension Compromise." For about eleven hours on Thursday, October 29, a trojanized build of Anthropic's own Claude Code extension — the one developers trust enough to let read and write their source code — was sitting in Cursor's official extension marketplace, published under Anthropic's own account, silently planting SSH backdoors on up to 5,000 machines. No phishing email, no suspicious download link, no user click required. If you had auto-update turned on, the malware installed itself.</p>
+
+    <h2>What actually happened</h2>
+    <p>Between roughly 2:27 a.m. and 1:35 p.m. Pacific Time, version <strong>2.1.313</strong> of the <code>anthropic.claude-code</code> extension was available through Cursor's marketplace — Cursor being the popular AI-first fork of VS Code built by Anysphere. According to independent researcher Kevin Beaumont and security firm Phorion, the malicious build was pushed from what looked like Anthropic's own official distribution channel, superseding the legitimate 2.1.312. Because Cursor extensions auto-update by default, users didn't need to do anything wrong; they just needed to have the extension installed.</p>
+    <p>Phorion's technical breakdown is unusually clean: the attacker didn't rewrite the extension at all. They prepended roughly 66 lines of a minified, wrapped JavaScript loader directly onto the top of <code>extension.js</code>, pulling in standard Node modules — <code>child_process</code>, <code>fs</code>, <code>os</code>, <code>path</code>, <code>http</code>, <code>crypto</code> — that executed the instant Node loaded the file, before the extension's normal <code>activate()</code> callback even ran. The real Claude Code code shipped untouched right underneath it. Nothing about the UI looked wrong, because nothing about the UI was wrong.</p>
+    <p>Once live, the payload did three things, per Phorion and corroborating analysis from BleepingComputer and dev.to researcher writeups: it appended an attacker-controlled Ed25519 SSH key — labeled to blend in as <code>svc-telemetry</code> — to <code>~/.ssh/authorized_keys</code>; it attempted to open a reverse SSH tunnel to a server at <code>134.209.82[.]225</code>, retrying roughly every 60 seconds; and it sent a single HTTP beacon to that same IP containing the victim's hostname, username, OS, CPU architecture, home directory, configured Git email, public IP, and — more alarmingly — the <em>names</em> of up to 40 environment variables matching patterns like <code>KEY</code>, <code>TOKEN</code>, <code>SECRET</code>, <code>PASS</code>, <code>AWS</code>, or <code>GCP</code>. It also tried to install persistence everywhere: a macOS LaunchAgent (<code>com.apple.sysmond.plist</code>), a Linux <code>@reboot</code> cron entry, and a Windows scheduled task named "SysMon" with a Startup-folder fallback.</p>
+
+    <h2>The bug that probably saved thousands of machines</h2>
+    <p>Here's the detail every outlet picked up: the malware shipped with a logic error that likely prevented most infections from becoming exploitable. On macOS, the SSH-enablement routine checks Remote Login status by running <code>systemsetup -getremotelogin</code> — but without root privileges, that command doesn't report "Off," it prints an administrator-access error and exits with status 0. Since the script only tries to turn SSH <em>on</em> when it sees the literal string "Off," the error message caused it to silently skip activation on machines where SSH wasn't already running. The attacker-controlled key still got dropped into <code>authorized_keys</code>, the beacon still fired, persistence still got installed — but the actual remote-access door, on most Mac and Windows machines, never opened. Phorion was blunt about it anyway: "the malware is still a significant threat that installs persistence and beacons host reconnaissance back to the operator," regardless of whether the SSH door itself worked.</p>
+
+    <h2>Who did what, and who's blaming whom</h2>
+    <p>Cursor confirmed the incident in a security notice, removed the malicious version, and — in a notably aggressive response — shut down its entire VS Code Marketplace to rotate every access key and audit every other extension before reopening it. The company also worked with the hosting provider to pull the attacker's command-and-control server offline, cutting both the reverse tunnels and the beacon traffic. Cursor says the compromise was isolated to its own marketplace; initial reports that npm, Open VSX, or Microsoft's VS Code Marketplace were also affected turned out to be wrong — security firm Socket.dev reviewed registry ingestion logs and found no evidence 2.1.313 was ever published to Open VSX, despite an earlier, since-revised report claiming otherwise.</p>
+    <p>Anthropic, for its part, pushed back hard on any suggestion its own systems were breached. Felix Rieseberg, a member of Anthropic's technical staff, stated publicly: "it wasn't a compromise of Anthropic's systems or employee laptops. A malicious actor used access to Cursor's marketplace to publish a tampered copy of the Claude Code extension, which we didn't build or publish. The versions on our official channels are not affected, and this only impacts Cursor users." Anthropic shipped a clean version, 2.1.314, to Open VSX and the Microsoft Marketplace shortly after the incident broke. As of this writing, how the attacker actually gained publishing control of Anthropic's account on Cursor's marketplace remains unexplained by either company — the single biggest open question in the whole incident.</p>
+
+    <h2>Why this is blowing up right now</h2>
+    <p>Three things make this story land harder than a typical malicious-npm-package headline. First, scale of trust: Claude Code extensions run with the full permissions of the IDE and the user launching it, meaning immediate access to local files, source code, and every developer tool on the machine — this isn't a sandboxed browser tab, it's your terminal. Second, the zero-click delivery: auto-update meant victims did nothing wrong and had no decision point at which to notice something was off. Third, the ambiguity about attribution and channel — initial confusion over whether Open VSX was also hit, paired with Anthropic's public denial of any internal breach, has left the security community debating exactly how a "malicious actor" got write access to a major AI lab's official marketplace account in the first place, with no clear answer yet.</p>
+    <p>It also lands in a year where "AI agent/tooling supply chain" has become its own incident category — this is a sibling story to the ARTEX AI-driven bank breaches and the OpenAI/Gemini agent-misuse disclosures from earlier this fall, except this time the vulnerable surface wasn't an autonomous agent acting badly, it was the delivery pipeline for the coding assistant itself.</p>
+
+    <h2>What to watch next</h2>
+    <ul>
+      <li><strong>Attribution of the marketplace account compromise</strong> — neither Cursor nor Anthropic has explained how the attacker got publishing rights under Anthropic's identity; that answer will determine whether this is an isolated incident or a repeatable technique.</li>
+      <li><strong>Credential rotation fallout</strong> — the beacon harvested environment-variable <em>names</em> (not values) for up to 5,000 machines; expect a slow trickle of follow-on reports if any of those machines also had actual secrets exfiltrated through a channel not yet disclosed.</li>
+      <li><strong>Marketplace governance changes</strong> — will Cursor, Microsoft, and Open VSX introduce mandatory code-signing or staged rollout for official vendor accounts, given that this attack specifically exploited the "official channel = trusted" assumption?</li>
+      <li><strong>Whether Anthropic publicly notifies affected users</strong> — as of the initial Ars Technica report, Anthropic had not proactively warned customers; Cursor said it was contacting affected users directly instead.</li>
+    </ul>
+
+    <blockquote>The scariest part of this incident isn't the malware's capability — a buggy SSH tunnel that mostly failed to open. It's that the entire attack rode in on a channel every developer in that ecosystem was trained to trust completely: an official update, from an official account, for a tool that already has the keys to everything on their machine.</blockquote>
+
+    <p>Developers who had Cursor's Claude Code extension installed between October 29's early morning and afternoon (Pacific Time) should not assume uninstalling the extension is sufficient — Phorion's advisory is explicit that the SSH key, LaunchAgent/cron/scheduled-task persistence, and dropped files all survive a simple uninstall and need to be removed by hand, followed by a credential rotation from a clean device.</p>
+
+    <h3 class="sources">Sources &amp; further reading</h3>
+    <ul class="sources">
+      <li>Phorion — "Official Claude Code Extension Compromise: Security Advisory" (Oct 30, 2026)</li>
+      <li>Ars Technica — "Anthropic VS Code extension on Cursor backdoored for nearly 12 hours"</li>
+      <li>BleepingComputer — "Malicious Claude Code extension on Cursor planted SSH backdoors"</li>
+      <li>Heise.de — "Claude Code extension infected with malware on Cursor marketplace"</li>
+      <li>The Register — "Anthropic: That Claude Code extension compromise… couldn't be us"</li>
+      <li>Panorays Threat Center — "Cursor Marketplace Supply Chain Attack: Lessons for TPRM"</li>
+      <li>Socket.dev — "Cursor Removes Malicious Claude Code 2.1.313 Extension From Its Marketplace"</li>
+      <li>Accorian Threat Advisory — "Claude Code Extension Supply Chain Attack: What Developers Need to Know"</li>
+      <li>Cursor — official security notice, "Claude Code extension security notice"</li>
+      <li>Reuters — "Up to 5,000 users affected by tampered Claude Code extension, says Cursor"</li>
+    </ul>
+  </article>
+</main>
+<footer>
+  Signal/Noise · Built by Kushagra
+</footer>
+</body>
+</html>
